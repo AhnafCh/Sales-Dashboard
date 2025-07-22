@@ -1,127 +1,152 @@
 "use client"
 
+import type * as React from "react"
 import {
-  Sidebar,
-  SidebarContent,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
-  SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarRail,
-  SidebarSeparator,
-  useSidebar,
-} from "@/components/ui/sidebar"
-import {
-  Gauge,
-  MessageSquare,
+  AudioWaveform,
+  BookOpen,
+  Bot,
+  Command,
+  Frame,
+  GalleryVerticalEnd,
+  Map,
+  PieChart,
+  Settings2,
+  SquareTerminal,
   Users,
-  Settings,
-  BarChart,
-  PackageSearch,
-  LayoutList,
+  ShoppingCart,
+  BarChart3,
+  MessageSquare,
+  Zap,
+  Monitor,
   PanelLeftClose,
   PanelLeftOpen,
 } from "lucide-react"
 
-const navItems = [
-  {
-    title: "Dashboard",
-    href: "/",
-    icon: Gauge,
-  },
-  {
-    title: "Live Monitoring",
-    href: "/live-monitoring",
-    icon: MessageSquare,
-  },
-  {
-    title: "Quick Operations",
-    href: "/quick-operations",
-    icon: LayoutList,
-  },
-  {
-    title: "Human Take-over",
-    href: "/human-takeover",
-    icon: Users,
-  },
-  {
-    title: "Channel Management",
-    href: "/channel-management",
-    icon: PackageSearch,
-  },
-  {
-    title: "Analytics",
-    href: "/analytics",
-    icon: BarChart,
-  },
-  {
-    title: "User / Subscription",
-    href: "/user-config",
-    icon: Settings,
-  },
-  {
-    title: "Best Selling",
-    href: "/best-selling",
-    icon: PackageSearch,
-  },
-]
+import { NavMain } from "@/components/nav-main"
+import { NavProjects } from "@/components/nav-projects"
+import { NavUser } from "@/components/nav-user"
+import { TeamSwitcher } from "@/components/team-switcher"
+import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail, useSidebar } from "@/components/ui/sidebar"
+import { Button } from "@/components/ui/button"
 
-export function AppSidebar() {
-  return (
-    <Sidebar collapsible="icon">
-      <SidebarHeader className="flex items-center justify-between px-4 py-3">
-        {/* Logo / Title – hidden in icon-only mode */}
-        <span className="text-lg font-semibold group-data-[collapsible=icon]:hidden">UniSense</span>
-        {/* Collapse / Expand button */}
-        <CollapseButton />
-      </SidebarHeader>
-
-      <SidebarSeparator />
-
-      <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupLabel>Navigation</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {navItems.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild tooltip={item.title}>
-                    <a href={item.href}>
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </a>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-      </SidebarContent>
-
-      {/* Rail lets users drag to resize / click to expand */}
-      <SidebarRail />
-    </Sidebar>
-  )
+// This is sample data.
+const data = {
+  user: {
+    name: "shadcn",
+    email: "m@example.com",
+    avatar: "/avatars/shadcn.jpg",
+  },
+  teams: [
+    {
+      name: "UniSense AI",
+      logo: GalleryVerticalEnd,
+      plan: "Enterprise",
+    },
+    {
+      name: "Acme Corp.",
+      logo: AudioWaveform,
+      plan: "Startup",
+    },
+    {
+      name: "Evil Corp.",
+      logo: Command,
+      plan: "Free",
+    },
+  ],
+  navMain: [
+    {
+      title: "Dashboard",
+      url: "/",
+      icon: SquareTerminal,
+      isActive: true,
+    },
+    {
+      title: "Live Monitoring",
+      url: "/live-monitoring",
+      icon: Monitor,
+    },
+    {
+      title: "Human Takeover",
+      url: "/human-takeover",
+      icon: MessageSquare,
+    },
+    {
+      title: "Channel Management",
+      url: "/channel-management",
+      icon: Settings2,
+    },
+    {
+      title: "Analytics",
+      url: "/analytics",
+      icon: BarChart3,
+    },
+    {
+      title: "Quick Operations",
+      url: "/quick-operations",
+      icon: Zap,
+    },
+    {
+      title: "User Config",
+      url: "/user-config",
+      icon: Users,
+    },
+    {
+      title: "Best Selling",
+      url: "/best-selling",
+      icon: ShoppingCart,
+    },
+  ],
+  projects: [
+    {
+      name: "Sales Agent",
+      url: "#",
+      icon: Frame,
+    },
+    {
+      name: "Telco Agent",
+      url: "#",
+      icon: PieChart,
+    },
+    {
+      name: "Onboarding Agent",
+      url: "#",
+      icon: Map,
+    },
+    {
+      name: "AirVoice Agent",
+      url: "#",
+      icon: BookOpen,
+    },
+    {
+      name: "Support Agent",
+      url: "#",
+      icon: Bot,
+    },
+  ],
 }
 
-/**
- * A small button that toggles the sidebar state.
- * It lives inside the header so we always have a control - even in icon mode.
- */
-function CollapseButton() {
+export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { state, toggleSidebar } = useSidebar()
 
   return (
-    <button
-      type="button"
-      aria-label={state === "expanded" ? "Collapse sidebar" : "Expand sidebar"}
-      onClick={toggleSidebar}
-      className="inline-flex size-8 items-center justify-center rounded-md hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring"
-    >
-      {state === "expanded" ? <PanelLeftClose className="size-4" /> : <PanelLeftOpen className="size-4 -rotate-180" />}
-    </button>
+    <Sidebar collapsible="icon" {...props}>
+      <SidebarHeader>
+        <div className="flex items-center justify-between">
+          <TeamSwitcher teams={data.teams} />
+          <Button variant="ghost" size="icon" onClick={toggleSidebar} className="h-7 w-7">
+            {state === "expanded" ? <PanelLeftClose className="h-4 w-4" /> : <PanelLeftOpen className="h-4 w-4" />}
+            <span className="sr-only">Toggle Sidebar</span>
+          </Button>
+        </div>
+      </SidebarHeader>
+      <SidebarContent>
+        <NavMain items={data.navMain} />
+        <NavProjects projects={data.projects} />
+      </SidebarContent>
+      <SidebarFooter>
+        <NavUser user={data.user} />
+      </SidebarFooter>
+      <SidebarRail />
+    </Sidebar>
   )
 }
