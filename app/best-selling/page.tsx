@@ -123,8 +123,8 @@ export default function BestSellingProducts() {
     <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Best Selling Products</h1>
-        <p className="text-gray-600">Discover our most popular AI customer service solutions</p>
+        <h1 className="text-3xl font-bold text-foreground">Best Selling Products</h1>
+        <p className="text-muted-foreground">Discover our most popular AI customer service solutions</p>
       </div>
 
       {/* Stats Overview */}
@@ -133,10 +133,10 @@ export default function BestSellingProducts() {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Total Products</p>
+                <p className="text-sm text-muted-foreground">Total Products</p>
                 <p className="text-2xl font-bold">24</p>
               </div>
-              <Package className="h-8 w-8 text-blue-600" />
+              <Package className="h-8 w-8 text-primary" />
             </div>
           </CardContent>
         </Card>
@@ -145,10 +145,10 @@ export default function BestSellingProducts() {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Total Sales</p>
+                <p className="text-sm text-muted-foreground">Total Sales</p>
                 <p className="text-2xl font-bold">8,519</p>
               </div>
-              <ShoppingCart className="h-8 w-8 text-green-600" />
+              <ShoppingCart className="h-8 w-8 text-emerald-400" />
             </div>
           </CardContent>
         </Card>
@@ -157,10 +157,10 @@ export default function BestSellingProducts() {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Revenue</p>
+                <p className="text-sm text-muted-foreground">Revenue</p>
                 <p className="text-2xl font-bold">$2.8M</p>
               </div>
-              <DollarSign className="h-8 w-8 text-purple-600" />
+              <DollarSign className="h-8 w-8 text-purple-400" />
             </div>
           </CardContent>
         </Card>
@@ -169,7 +169,7 @@ export default function BestSellingProducts() {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Avg Rating</p>
+                <p className="text-sm text-muted-foreground">Avg Rating</p>
                 <p className="text-2xl font-bold">4.7</p>
               </div>
               <Star className="h-8 w-8 text-yellow-600" />
@@ -228,7 +228,7 @@ export default function BestSellingProducts() {
                   <div className="absolute top-2 left-2 flex gap-2">
                     {product.featured && <Badge className="bg-purple-100 text-purple-800">Featured</Badge>}
                     {product.trending && (
-                      <Badge className="bg-green-100 text-green-800">
+                      <Badge className="bg-emerald-900/40 text-emerald-300">
                         <TrendingUp className="w-3 h-3 mr-1" />
                         Trending
                       </Badge>
@@ -252,27 +252,27 @@ export default function BestSellingProducts() {
                       </Badge>
                     </div>
                     <div className="text-right">
-                      <div className="text-2xl font-bold text-green-600">${product.price}</div>
+                      <div className="text-2xl font-bold text-emerald-400">${product.price}</div>
                     </div>
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-gray-600 text-sm mb-4">{product.description}</p>
+                  <p className="text-muted-foreground text-sm mb-4">{product.description}</p>
 
                   <div className="flex items-center gap-2 mb-4">
                     <div className="flex">{renderStars(product.rating)}</div>
                     <span className="text-sm font-medium">{product.rating}</span>
-                    <span className="text-sm text-gray-600">({product.reviews} reviews)</span>
+                    <span className="text-sm text-muted-foreground">({product.reviews} reviews)</span>
                   </div>
 
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center gap-2">
-                      <Users className="h-4 w-4 text-gray-600" />
-                      <span className="text-sm text-gray-600">{product.sales} sales</span>
+                      <Users className="h-4 w-4 text-muted-foreground" />
+                      <span className="text-sm text-muted-foreground">{product.sales} sales</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Eye className="h-4 w-4 text-gray-600" />
-                      <span className="text-sm text-gray-600">View Details</span>
+                      <Eye className="h-4 w-4 text-muted-foreground" />
+                      <span className="text-sm text-muted-foreground">View Details</span>
                     </div>
                   </div>
 
@@ -296,7 +296,7 @@ export default function BestSellingProducts() {
             <CardContent className="p-0">
               <div className="space-y-0">
                 {filteredProducts.map((product) => (
-                  <div key={product.id} className="flex items-center gap-4 p-6 border-b hover:bg-gray-50">
+                  <div key={product.id} className="flex items-center gap-4 p-6 border-b hover:bg-muted/30">
                     <img
                       src={product.image || "/placeholder.svg"}
                       alt={product.name}
@@ -310,7 +310,7 @@ export default function BestSellingProducts() {
                             <Badge variant="outline">{product.category}</Badge>
                             {product.featured && <Badge className="bg-purple-100 text-purple-800">Featured</Badge>}
                             {product.trending && (
-                              <Badge className="bg-green-100 text-green-800">
+                              <Badge className="bg-emerald-900/40 text-emerald-300">
                                 <TrendingUp className="w-3 h-3 mr-1" />
                                 Trending
                               </Badge>
@@ -318,19 +318,19 @@ export default function BestSellingProducts() {
                           </div>
                         </div>
                         <div className="text-right">
-                          <div className="text-2xl font-bold text-green-600">${product.price}</div>
-                          <div className="text-sm text-gray-600">{product.sales} sales</div>
+                          <div className="text-2xl font-bold text-emerald-400">${product.price}</div>
+                          <div className="text-sm text-muted-foreground">{product.sales} sales</div>
                         </div>
                       </div>
 
-                      <p className="text-gray-600 text-sm mb-3">{product.description}</p>
+                      <p className="text-muted-foreground text-sm mb-3">{product.description}</p>
 
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-4">
                           <div className="flex items-center gap-2">
                             <div className="flex">{renderStars(product.rating)}</div>
                             <span className="text-sm font-medium">{product.rating}</span>
-                            <span className="text-sm text-gray-600">({product.reviews})</span>
+                            <span className="text-sm text-muted-foreground">({product.reviews})</span>
                           </div>
                         </div>
 
@@ -378,7 +378,7 @@ export default function BestSellingProducts() {
                       {renderStars(product.rating).slice(0, 5)}
                       <span className="text-sm ml-1">{product.rating}</span>
                     </div>
-                    <span className="font-bold text-green-600">${product.price}</span>
+                    <span className="font-bold text-emerald-400">${product.price}</span>
                   </div>
                 </div>
               ))}

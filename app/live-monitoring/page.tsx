@@ -88,26 +88,26 @@ export default function LiveMonitoring() {
   const getChannelIcon = (channel: string) => {
     switch (channel) {
       case "phone":
-        return <Phone className="h-4 w-4 text-green-600" />
+        return <Phone className="h-4 w-4 text-emerald-400" />
       case "facebook":
-        return <Facebook className="h-4 w-4 text-blue-600" />
+        return <Facebook className="h-4 w-4 text-primary" />
       case "website":
-        return <Globe className="h-4 w-4 text-gray-600" />
+        return <Globe className="h-4 w-4 text-muted-foreground" />
       case "instagram":
         return <Instagram className="h-4 w-4 text-pink-600" />
       default:
-        return <MessageSquare className="h-4 w-4 text-gray-600" />
+        return <MessageSquare className="h-4 w-4 text-muted-foreground" />
     }
   }
 
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "active":
-        return <Badge className="bg-green-100 text-green-800">Active</Badge>
+        return <Badge className="bg-emerald-900/40 text-emerald-300">Active</Badge>
       case "escalation-needed":
         return <Badge variant="destructive">Escalation Needed</Badge>
       case "knowledge-gap":
-        return <Badge className="bg-yellow-100 text-yellow-800">Knowledge Gap</Badge>
+        return <Badge className="bg-amber-900/40 text-amber-300">Knowledge Gap</Badge>
       default:
         return <Badge variant="secondary">{status}</Badge>
     }
@@ -116,15 +116,15 @@ export default function LiveMonitoring() {
   const getSentimentColor = (sentiment: string) => {
     switch (sentiment) {
       case "positive":
-        return "text-green-600"
+        return "text-emerald-400"
       case "neutral":
-        return "text-gray-600"
+        return "text-muted-foreground"
       case "frustrated":
-        return "text-red-600"
+        return "text-red-400"
       case "confused":
-        return "text-yellow-600"
+        return "text-amber-400"
       default:
-        return "text-gray-600"
+        return "text-muted-foreground"
     }
   }
 
@@ -137,8 +137,8 @@ export default function LiveMonitoring() {
       <div className="flex items-center gap-4 mb-6">
         <SidebarTrigger className="-ml-1" />
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Live Monitoring Workspace</h1>
-          <p className="text-gray-600">Real-time AI performance monitoring and intervention</p>
+          <h1 className="text-3xl font-bold text-foreground">Live Monitoring Workspace</h1>
+          <p className="text-muted-foreground">Real-time AI performance monitoring and intervention</p>
         </div>
       </div>
 
@@ -148,10 +148,10 @@ export default function LiveMonitoring() {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Active Conversations</p>
+                <p className="text-sm text-muted-foreground">Active Conversations</p>
                 <p className="text-2xl font-bold">{liveConversations.length}</p>
               </div>
-              <MessageSquare className="h-8 w-8 text-blue-600" />
+              <MessageSquare className="h-8 w-8 text-primary" />
             </div>
           </CardContent>
         </Card>
@@ -160,12 +160,12 @@ export default function LiveMonitoring() {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Escalations Needed</p>
-                <p className="text-2xl font-bold text-red-600">
+                <p className="text-sm text-muted-foreground">Escalations Needed</p>
+                <p className="text-2xl font-bold text-red-400">
                   {liveConversations.filter((c) => c.status === "escalation-needed").length}
                 </p>
               </div>
-              <AlertTriangle className="h-8 w-8 text-red-600" />
+              <AlertTriangle className="h-8 w-8 text-red-400" />
             </div>
           </CardContent>
         </Card>
@@ -174,12 +174,12 @@ export default function LiveMonitoring() {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Knowledge Gaps</p>
-                <p className="text-2xl font-bold text-yellow-600">
+                <p className="text-sm text-muted-foreground">Knowledge Gaps</p>
+                <p className="text-2xl font-bold text-amber-400">
                   {liveConversations.filter((c) => c.status === "knowledge-gap").length}
                 </p>
               </div>
-              <TrendingUp className="h-8 w-8 text-yellow-600" />
+              <TrendingUp className="h-8 w-8 text-amber-400" />
             </div>
           </CardContent>
         </Card>
@@ -188,10 +188,10 @@ export default function LiveMonitoring() {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Avg Response Time</p>
+                <p className="text-sm text-muted-foreground">Avg Response Time</p>
                 <p className="text-2xl font-bold">2.3s</p>
               </div>
-              <Clock className="h-8 w-8 text-green-600" />
+              <Clock className="h-8 w-8 text-emerald-400" />
             </div>
           </CardContent>
         </Card>
@@ -249,13 +249,13 @@ export default function LiveMonitoring() {
             <CardContent className="p-0">
               <div className="space-y-0">
                 {filteredConversations.map((conversation) => (
-                  <div key={conversation.id} className="p-4 border-b hover:bg-gray-50 cursor-pointer">
+                  <div key={conversation.id} className="p-4 border-b hover:bg-muted/30 cursor-pointer">
                     <div className="flex items-start justify-between mb-3">
                       <div className="flex items-center gap-3">
                         {getChannelIcon(conversation.channel)}
                         <div>
                           <h3 className="font-semibold">{conversation.customer}</h3>
-                          <p className="text-sm text-gray-600">{conversation.issue}</p>
+                          <p className="text-sm text-muted-foreground">{conversation.issue}</p>
                         </div>
                       </div>
                       <div className="flex items-center gap-2">
@@ -266,7 +266,7 @@ export default function LiveMonitoring() {
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-4 mb-3 text-sm text-gray-600">
+                    <div className="flex items-center gap-4 mb-3 text-sm text-muted-foreground">
                       <div className="flex items-center gap-1">
                         <Headphones className="h-3 w-3" />
                         <span>{conversation.agent}</span>
@@ -281,10 +281,10 @@ export default function LiveMonitoring() {
                       </div>
                     </div>
 
-                    <div className="bg-gray-50 p-3 rounded-lg mb-3">
+                    <div className="bg-muted/30 p-3 rounded-lg mb-3">
                       <p className="text-sm">{conversation.transcript}</p>
                       {conversation.language !== "English" && (
-                        <p className="text-xs text-gray-500 mt-2 italic">
+                        <p className="text-xs text-muted-foreground mt-2 italic">
                           Translation:{" "}
                           {conversation.language === "Spanish"
                             ? "The product arrived damaged and I need a solution..."
@@ -337,7 +337,7 @@ export default function LiveMonitoring() {
           <Card className="mb-6">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <AlertTriangle className="h-5 w-5 text-yellow-600" />
+                <AlertTriangle className="h-5 w-5 text-amber-400" />
                 Knowledge Gap Alerts
               </CardTitle>
               <CardDescription>Immediate attention required</CardDescription>
@@ -357,7 +357,7 @@ export default function LiveMonitoring() {
                         {gap.urgency}
                       </Badge>
                     </div>
-                    <div className="flex items-center justify-between text-xs text-gray-600 mb-3">
+                    <div className="flex items-center justify-between text-xs text-muted-foreground mb-3">
                       <span>{gap.frequency} queries today</span>
                       <span>{gap.channel}</span>
                     </div>

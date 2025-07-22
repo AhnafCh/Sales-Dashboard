@@ -58,8 +58,8 @@ export default function Analytics() {
         <div className="flex items-center gap-4">
           <SidebarTrigger className="-ml-1" />
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Advanced Analytics</h1>
-            <p className="text-gray-600">Business intelligence and performance insights</p>
+            <h1 className="text-3xl font-bold text-foreground">Advanced Analytics</h1>
+            <p className="text-muted-foreground">Business intelligence and performance insights</p>
           </div>
         </div>
         <div className="flex items-center gap-2">
@@ -91,8 +91,8 @@ export default function Analytics() {
           <CardContent>
             <div className="text-2xl font-bold">{metrics.volume.current.toLocaleString()}</div>
             <div className="flex items-center text-xs text-muted-foreground">
-              <TrendingUp className="h-3 w-3 mr-1 text-green-600" />
-              <span className="text-green-600">+{metrics.volume.change}%</span>
+              <TrendingUp className="h-3 w-3 mr-1 text-emerald-400" />
+              <span className="text-emerald-400">+{metrics.volume.change}%</span>
               <span className="ml-1">from last period</span>
             </div>
           </CardContent>
@@ -106,8 +106,8 @@ export default function Analytics() {
           <CardContent>
             <div className="text-2xl font-bold">{metrics.responseTime.current}s</div>
             <div className="flex items-center text-xs text-muted-foreground">
-              <TrendingDown className="h-3 w-3 mr-1 text-green-600" />
-              <span className="text-green-600">{metrics.responseTime.change}%</span>
+              <TrendingDown className="h-3 w-3 mr-1 text-emerald-400" />
+              <span className="text-emerald-400">{metrics.responseTime.change}%</span>
               <span className="ml-1">improvement</span>
             </div>
           </CardContent>
@@ -121,8 +121,8 @@ export default function Analytics() {
           <CardContent>
             <div className="text-2xl font-bold">{metrics.satisfaction.current}/5</div>
             <div className="flex items-center text-xs text-muted-foreground">
-              <TrendingUp className="h-3 w-3 mr-1 text-green-600" />
-              <span className="text-green-600">+{metrics.satisfaction.change}%</span>
+              <TrendingUp className="h-3 w-3 mr-1 text-emerald-400" />
+              <span className="text-emerald-400">+{metrics.satisfaction.change}%</span>
               <span className="ml-1">from last period</span>
             </div>
           </CardContent>
@@ -136,8 +136,8 @@ export default function Analytics() {
           <CardContent>
             <div className="text-2xl font-bold">{metrics.resolution.current}%</div>
             <div className="flex items-center text-xs text-muted-foreground">
-              <TrendingUp className="h-3 w-3 mr-1 text-green-600" />
-              <span className="text-green-600">+{metrics.resolution.change}%</span>
+              <TrendingUp className="h-3 w-3 mr-1 text-emerald-400" />
+              <span className="text-emerald-400">+{metrics.resolution.change}%</span>
               <span className="ml-1">from last period</span>
             </div>
           </CardContent>
@@ -169,7 +169,7 @@ export default function Analytics() {
                         className="bg-blue-500 rounded-t w-8 transition-all hover:bg-blue-600"
                         style={{ height: `${(value / 2100) * 200}px` }}
                       ></div>
-                      <span className="text-xs text-gray-600">
+                      <span className="text-xs text-muted-foreground">
                         {new Date(Date.now() - (6 - index) * 24 * 60 * 60 * 1000).toLocaleDateString("en-US", {
                           weekday: "short",
                         })}
@@ -191,13 +191,13 @@ export default function Analytics() {
                   {peakHours.map((hour, index) => (
                     <div key={index} className="flex items-center gap-3">
                       <span className="text-sm font-medium w-16">{hour.hour}</span>
-                      <div className="flex-1 bg-gray-200 rounded-full h-2">
+                      <div className="flex-1 bg-muted/30 rounded-full h-2">
                         <div
                           className="bg-green-500 h-2 rounded-full transition-all"
                           style={{ width: `${(hour.volume / 1156) * 100}%` }}
                         ></div>
                       </div>
-                      <span className="text-sm text-gray-600 w-12">{hour.volume}</span>
+                      <span className="text-sm text-muted-foreground w-12">{hour.volume}</span>
                     </div>
                   ))}
                 </div>
@@ -214,19 +214,19 @@ export default function Analytics() {
             <CardContent>
               <div className="grid md:grid-cols-3 gap-6">
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-green-600">156</div>
-                  <p className="text-sm text-gray-600">Sales Completed</p>
-                  <p className="text-xs text-green-600">+23% vs last period</p>
+                  <div className="text-3xl font-bold text-emerald-400">156</div>
+                  <p className="text-sm text-muted-foreground">Sales Completed</p>
+                  <p className="text-xs text-emerald-400">+23% vs last period</p>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-blue-600">$47,890</div>
-                  <p className="text-sm text-gray-600">Revenue Generated</p>
-                  <p className="text-xs text-blue-600">+18% vs last period</p>
+                  <div className="text-3xl font-bold text-primary">$47,890</div>
+                  <p className="text-sm text-muted-foreground">Revenue Generated</p>
+                  <p className="text-xs text-primary">+18% vs last period</p>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-purple-600">12.3%</div>
-                  <p className="text-sm text-gray-600">Conversion Rate</p>
-                  <p className="text-xs text-purple-600">+2.1% vs last period</p>
+                  <div className="text-3xl font-bold text-purple-400">12.3%</div>
+                  <p className="text-sm text-muted-foreground">Conversion Rate</p>
+                  <p className="text-xs text-purple-400">+2.1% vs last period</p>
                 </div>
               </div>
             </CardContent>
@@ -254,7 +254,7 @@ export default function Analytics() {
                   </thead>
                   <tbody>
                     {channelData.map((channel, index) => (
-                      <tr key={index} className="border-b hover:bg-gray-50">
+                      <tr key={index} className="border-b hover:bg-muted/30">
                         <td className="p-3 font-medium">{channel.channel}</td>
                         <td className="p-3">{channel.volume.toLocaleString()}</td>
                         <td className="p-3">
@@ -269,10 +269,10 @@ export default function Analytics() {
                           <Badge
                             className={
                               channel.resolution > 95
-                                ? "bg-green-100 text-green-800"
+                                ? "bg-emerald-900/40 text-emerald-300"
                                 : channel.resolution > 90
-                                  ? "bg-yellow-100 text-yellow-800"
-                                  : "bg-red-100 text-red-800"
+                                  ? "bg-amber-900/40 text-amber-300"
+                                  : "bg-red-900/40 text-red-300"
                             }
                           >
                             {channel.resolution > 95
@@ -305,16 +305,16 @@ export default function Analytics() {
                       <div className="flex-1">
                         <div className="flex items-center justify-between mb-1">
                           <span className="text-sm font-medium">{intent.intent}</span>
-                          <span className="text-sm text-gray-600">{intent.count}</span>
+                          <span className="text-sm text-muted-foreground">{intent.count}</span>
                         </div>
-                        <div className="bg-gray-200 rounded-full h-2">
+                        <div className="bg-muted/30 rounded-full h-2">
                           <div
                             className="bg-blue-500 h-2 rounded-full transition-all"
                             style={{ width: `${intent.percentage}%` }}
                           ></div>
                         </div>
                       </div>
-                      <span className="text-sm text-gray-600 w-12">{intent.percentage}%</span>
+                      <span className="text-sm text-muted-foreground w-12">{intent.percentage}%</span>
                     </div>
                   ))}
                 </div>
@@ -324,7 +324,7 @@ export default function Analytics() {
                     <div className="absolute inset-0 flex items-center justify-center">
                       <div className="text-center">
                         <div className="text-2xl font-bold">8</div>
-                        <div className="text-sm text-gray-600">Categories</div>
+                        <div className="text-sm text-muted-foreground">Categories</div>
                       </div>
                     </div>
                   </div>
@@ -349,7 +349,7 @@ export default function Analytics() {
                         <span className="text-sm">{rating}</span>
                         <Star className="h-3 w-3 text-yellow-500 fill-current" />
                       </div>
-                      <div className="flex-1 bg-gray-200 rounded-full h-2">
+                      <div className="flex-1 bg-muted/30 rounded-full h-2">
                         <div
                           className="bg-yellow-500 h-2 rounded-full transition-all"
                           style={{
@@ -357,7 +357,7 @@ export default function Analytics() {
                           }}
                         ></div>
                       </div>
-                      <span className="text-sm text-gray-600 w-12">
+                      <span className="text-sm text-muted-foreground w-12">
                         {rating === 5 ? "65%" : rating === 4 ? "25%" : rating === 3 ? "8%" : rating === 2 ? "2%" : "0%"}
                       </span>
                     </div>
@@ -379,7 +379,7 @@ export default function Analytics() {
                         className="bg-yellow-500 rounded-t w-8 transition-all hover:bg-yellow-600"
                         style={{ height: `${(value / 5) * 160}px` }}
                       ></div>
-                      <span className="text-xs text-gray-600">{value}</span>
+                      <span className="text-xs text-muted-foreground">{value}</span>
                     </div>
                   ))}
                 </div>
@@ -399,15 +399,15 @@ export default function Analytics() {
                 <div className="space-y-4">
                   <div className="flex justify-between items-center p-3 bg-blue-50 rounded-lg">
                     <span className="font-medium">New Users</span>
-                    <span className="text-2xl font-bold text-blue-600">2,847</span>
+                    <span className="text-2xl font-bold text-primary">2,847</span>
                   </div>
                   <div className="flex justify-between items-center p-3 bg-green-50 rounded-lg">
                     <span className="font-medium">Returning Users</span>
-                    <span className="text-2xl font-bold text-green-600">8,234</span>
+                    <span className="text-2xl font-bold text-emerald-400">8,234</span>
                   </div>
                   <div className="flex justify-between items-center p-3 bg-purple-50 rounded-lg">
                     <span className="font-medium">Active Sessions</span>
-                    <span className="text-2xl font-bold text-purple-600">1,456</span>
+                    <span className="text-2xl font-bold text-purple-400">1,456</span>
                   </div>
                 </div>
               </CardContent>

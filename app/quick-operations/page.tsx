@@ -94,9 +94,9 @@ export default function QuickOperations() {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "active":
-        return <Badge className="bg-blue-100 text-blue-800">Active</Badge>
+        return <Badge className="bg-blue-900/40 text-blue-300">Active</Badge>
       case "resolved":
-        return <Badge className="bg-green-100 text-green-800">Resolved</Badge>
+        return <Badge className="bg-emerald-900/40 text-emerald-300">Resolved</Badge>
       case "escalated":
         return <Badge variant="destructive">Escalated</Badge>
       default:
@@ -109,7 +109,7 @@ export default function QuickOperations() {
       case "urgent":
         return <Badge variant="destructive">Urgent</Badge>
       case "high":
-        return <Badge className="bg-orange-100 text-orange-800">High</Badge>
+        return <Badge className="bg-orange-900/40 text-orange-300">High</Badge>
       case "medium":
         return <Badge variant="secondary">Medium</Badge>
       case "low":
@@ -125,8 +125,8 @@ export default function QuickOperations() {
       <div className="flex items-center gap-4 mb-6">
         <SidebarTrigger className="-ml-1" />
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Quick Operations</h1>
-          <p className="text-gray-600">Filters, exports, reminders, and bulk operations</p>
+          <h1 className="text-3xl font-bold text-foreground">Quick Operations</h1>
+          <p className="text-muted-foreground">Filters, exports, reminders, and bulk operations</p>
         </div>
       </div>
 
@@ -227,7 +227,7 @@ export default function QuickOperations() {
               <div className="flex items-center gap-4 mb-4">
                 <div className="flex-1">
                   <div className="relative">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                     <Input placeholder="Search by customer name, issue, or keywords..." className="pl-10" />
                   </div>
                 </div>
@@ -238,7 +238,7 @@ export default function QuickOperations() {
                 <Button variant="outline">Clear All</Button>
               </div>
 
-              <div className="text-sm text-gray-600 mb-4">
+              <div className="text-sm text-muted-foreground mb-4">
                 Showing {filteredConversations.length} of {conversations.length} conversations
               </div>
             </CardContent>
@@ -265,7 +265,7 @@ export default function QuickOperations() {
                   </thead>
                   <tbody>
                     {filteredConversations.map((conversation) => (
-                      <tr key={conversation.id} className="border-b hover:bg-gray-50">
+                      <tr key={conversation.id} className="border-b hover:bg-muted/30">
                         <td className="p-3 font-medium">{conversation.customer}</td>
                         <td className="p-3 capitalize">{conversation.channel}</td>
                         <td className="p-3">{conversation.issue}</td>
@@ -385,11 +385,11 @@ export default function QuickOperations() {
                 <div className="pt-4 border-t">
                   <h4 className="font-medium mb-3">Scheduled Exports</h4>
                   <div className="space-y-2">
-                    <div className="flex items-center justify-between p-2 bg-gray-50 rounded">
+                    <div className="flex items-center justify-between p-2 bg-muted/30 rounded">
                       <span className="text-sm">Weekly Performance Report</span>
                       <Badge variant="outline">Active</Badge>
                     </div>
-                    <div className="flex items-center justify-between p-2 bg-gray-50 rounded">
+                    <div className="flex items-center justify-between p-2 bg-muted/30 rounded">
                       <span className="text-sm">Monthly Analytics Summary</span>
                       <Badge variant="outline">Active</Badge>
                     </div>
@@ -415,10 +415,10 @@ export default function QuickOperations() {
                 <div className="space-y-4">
                   {reminders.map((reminder) => (
                     <div key={reminder.id} className="flex items-start gap-3 p-3 border rounded-lg">
-                      <Bell className="h-5 w-5 text-blue-600 mt-0.5" />
+                      <Bell className="h-5 w-5 text-primary mt-0.5" />
                       <div className="flex-1">
                         <h4 className="font-medium">{reminder.title}</h4>
-                        <div className="flex items-center gap-2 mt-1 text-sm text-gray-600">
+                        <div className="flex items-center gap-2 mt-1 text-sm text-muted-foreground">
                           <Clock className="h-3 w-3" />
                           <span>{reminder.due}</span>
                           {getPriorityBadge(reminder.priority)}
@@ -525,7 +525,7 @@ export default function QuickOperations() {
                             </span>
                             <div className="flex items-center gap-2">
                               {getStatusBadge(conversation.status)}
-                              <span className="text-sm text-gray-500">{conversation.date}</span>
+                              <span className="text-sm text-muted-foreground">{conversation.date}</span>
                             </div>
                           </div>
                         </Label>
@@ -570,7 +570,7 @@ export default function QuickOperations() {
 
                 <div className="pt-4 border-t">
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-600">0 conversations selected</span>
+                    <span className="text-sm text-muted-foreground">0 conversations selected</span>
                     <div className="flex gap-2">
                       <Button variant="outline">Select All</Button>
                       <Button disabled>Apply Actions</Button>

@@ -52,7 +52,7 @@ export default function UserConfig() {
         )
       case "Manager":
         return (
-          <Badge className="bg-blue-100 text-blue-800">
+          <Badge className="bg-blue-900/40 text-blue-300">
             <Shield className="w-3 h-3 mr-1" />
             Manager
           </Badge>
@@ -72,9 +72,9 @@ export default function UserConfig() {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "active":
-        return <Badge className="bg-green-100 text-green-800">Active</Badge>
+        return <Badge className="bg-emerald-900/40 text-emerald-300">Active</Badge>
       case "pending":
-        return <Badge className="bg-yellow-100 text-yellow-800">Pending</Badge>
+        return <Badge className="bg-amber-900/40 text-amber-300">Pending</Badge>
       case "inactive":
         return <Badge variant="secondary">Inactive</Badge>
       default:
@@ -86,8 +86,8 @@ export default function UserConfig() {
     <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Account Settings</h1>
-        <p className="text-gray-600">Manage your profile, team, and subscription settings</p>
+        <h1 className="text-3xl font-bold text-foreground">Account Settings</h1>
+        <p className="text-muted-foreground">Manage your profile, team, and subscription settings</p>
       </div>
 
       <Tabs defaultValue="profile" className="space-y-6">
@@ -110,30 +110,30 @@ export default function UserConfig() {
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <Label>First Name</Label>
-                    <Input defaultValue="John" />
+                    <Input className="text-foreground" defaultValue="John" />
                   </div>
                   <div>
                     <Label>Last Name</Label>
-                    <Input defaultValue="Doe" />
+                    <Input className="text-foreground" defaultValue="Doe" />
                   </div>
                 </div>
                 <div>
                   <Label>Email Address</Label>
-                  <Input type="email" defaultValue="john.doe@company.com" />
+                  <Input className="text-foreground" type="email" defaultValue="john.doe@company.com" />
                 </div>
                 <div>
                   <Label>Phone Number</Label>
-                  <Input type="tel" defaultValue="+1 (555) 123-4567" />
+                  <Input className="text-foreground" type="tel" defaultValue="+1 (555) 123-4567" />
                 </div>
                 <div>
                   <Label>Company</Label>
-                  <Input defaultValue="Acme Corporation" />
+                  <Input className="text-foreground" defaultValue="Acme Corporation" />
                 </div>
                 <div>
                   <Label>Job Title</Label>
-                  <Input defaultValue="Customer Success Manager" />
+                  <Input className="text-foreground" defaultValue="Customer Success Manager" />
                 </div>
-                <Button className="w-full">Save Changes</Button>
+                <Button className="w-full text-foreground">Save Changes</Button>
               </CardContent>
             </Card>
 
@@ -146,34 +146,34 @@ export default function UserConfig() {
                 <div className="flex items-center justify-between">
                   <div className="space-y-0.5">
                     <Label>Email Notifications</Label>
-                    <p className="text-sm text-gray-600">Receive email alerts for important events</p>
+                    <p className="text-sm text-muted-foreground">Receive email alerts for important events</p>
                   </div>
                   <Switch defaultChecked />
                 </div>
                 <div className="flex items-center justify-between">
                   <div className="space-y-0.5">
                     <Label>SMS Notifications</Label>
-                    <p className="text-sm text-gray-600">Get SMS alerts for urgent issues</p>
+                    <p className="text-sm text-muted-foreground">Get SMS alerts for urgent issues</p>
                   </div>
                   <Switch />
                 </div>
                 <div className="flex items-center justify-between">
                   <div className="space-y-0.5">
                     <Label>Weekly Reports</Label>
-                    <p className="text-sm text-gray-600">Receive weekly performance summaries</p>
+                    <p className="text-sm text-muted-foreground">Receive weekly performance summaries</p>
                   </div>
                   <Switch defaultChecked />
                 </div>
                 <div className="flex items-center justify-between">
                   <div className="space-y-0.5">
                     <Label>Marketing Communications</Label>
-                    <p className="text-sm text-gray-600">Receive product updates and tips</p>
+                    <p className="text-sm text-muted-foreground">Receive product updates and tips</p>
                   </div>
                   <Switch />
                 </div>
                 <div>
                   <Label>Time Zone</Label>
-                  <select className="w-full p-2 border rounded-md mt-1">
+                  <select className="w-full p-2 border rounded-md mt-1 text-foreground">
                     <option>UTC-8 (Pacific Time)</option>
                     <option>UTC-5 (Eastern Time)</option>
                     <option>UTC+0 (GMT)</option>
@@ -189,9 +189,9 @@ export default function UserConfig() {
           <div className="flex items-center justify-between">
             <div>
               <h3 className="text-lg font-semibold">Team Members</h3>
-              <p className="text-gray-600">Manage your team and their access permissions</p>
+              <p className="text-muted-foreground">Manage your team and their access permissions</p>
             </div>
-            <Button>
+            <Button className="text-foreground">
               <Plus className="h-4 w-4 mr-2" />
               Invite Member
             </Button>
@@ -212,27 +212,27 @@ export default function UserConfig() {
                   </thead>
                   <tbody>
                     {teamMembers.map((member) => (
-                      <tr key={member.id} className="border-b hover:bg-gray-50">
+                      <tr key={member.id} className="border-b hover:bg-muted/30">
                         <td className="p-4">
                           <div className="flex items-center gap-3">
-                            <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                              <User className="w-4 h-4 text-blue-600" />
+                            <div className="w-8 h-8 bg-blue-900/40 rounded-full flex items-center justify-center">
+                              <User className="w-4 h-4 text-blue-300" />
                             </div>
                             <div>
                               <p className="font-medium">{member.name}</p>
-                              <p className="text-sm text-gray-600">{member.email}</p>
+                              <p className="text-sm text-muted-foreground">{member.email}</p>
                             </div>
                           </div>
                         </td>
                         <td className="p-4">{getRoleBadge(member.role)}</td>
                         <td className="p-4">{getStatusBadge(member.status)}</td>
-                        <td className="p-4 text-sm text-gray-600">{member.joinDate}</td>
+                        <td className="p-4 text-sm text-muted-foreground">{member.joinDate}</td>
                         <td className="p-4">
                           <div className="flex items-center gap-2">
-                            <Button size="sm" variant="outline">
+                            <Button size="sm" variant="outline" className="text-foreground bg-transparent">
                               <Edit className="h-3 w-3" />
                             </Button>
-                            <Button size="sm" variant="outline">
+                            <Button size="sm" variant="outline" className="text-foreground bg-transparent">
                               <Trash2 className="h-3 w-3" />
                             </Button>
                           </div>
@@ -258,7 +258,7 @@ export default function UserConfig() {
                       <Crown className="w-4 h-4 text-red-600" />
                       Admin
                     </h4>
-                    <ul className="text-sm text-gray-600 space-y-1">
+                    <ul className="text-sm text-muted-foreground space-y-1">
                       <li>• Full system access</li>
                       <li>• Manage team members</li>
                       <li>• Billing and subscriptions</li>
@@ -270,7 +270,7 @@ export default function UserConfig() {
                       <Shield className="w-4 h-4 text-blue-600" />
                       Manager
                     </h4>
-                    <ul className="text-sm text-gray-600 space-y-1">
+                    <ul className="text-sm text-muted-foreground space-y-1">
                       <li>• Monitor conversations</li>
                       <li>• Manage AI agents</li>
                       <li>• View analytics</li>
@@ -279,10 +279,10 @@ export default function UserConfig() {
                   </div>
                   <div className="p-4 border rounded-lg">
                     <h4 className="font-semibold mb-2 flex items-center gap-2">
-                      <User className="w-4 h-4 text-gray-600" />
+                      <User className="w-4 h-4 text-muted-foreground" />
                       Agent
                     </h4>
-                    <ul className="text-sm text-gray-600 space-y-1">
+                    <ul className="text-sm text-muted-foreground space-y-1">
                       <li>• Handle conversations</li>
                       <li>• View customer info</li>
                       <li>• Basic reporting</li>
@@ -307,29 +307,29 @@ export default function UserConfig() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <span className="font-semibold text-lg">Premium Plan</span>
+                  <span className="font-semibold text-lg text-foreground">Premium Plan</span>
                   <Badge className="bg-yellow-100 text-yellow-800">Active</Badge>
                 </div>
                 <div className="space-y-2">
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Monthly Price</span>
-                    <span className="font-semibold">$299/month</span>
+                    <span className="text-muted-foreground">Monthly Price</span>
+                    <span className="font-semibold text-foreground">$299/month</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Token Allowance</span>
-                    <span className="font-semibold">100,000 tokens</span>
+                    <span className="text-muted-foreground">Token Allowance</span>
+                    <span className="font-semibold text-foreground">100,000 tokens</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Team Members</span>
-                    <span className="font-semibold">Up to 10</span>
+                    <span className="text-muted-foreground">Team Members</span>
+                    <span className="font-semibold text-foreground">Up to 10</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Next Billing</span>
-                    <span className="font-semibold">April 15, 2024</span>
+                    <span className="text-muted-foreground">Next Billing</span>
+                    <span className="font-semibold text-foreground">April 15, 2024</span>
                   </div>
                 </div>
                 <div className="pt-4 border-t">
-                  <Button className="w-full bg-transparent" variant="outline">
+                  <Button className="w-full bg-transparent text-foreground" variant="outline">
                     Change Plan
                   </Button>
                 </div>
@@ -344,33 +344,33 @@ export default function UserConfig() {
               <CardContent className="space-y-4">
                 <div>
                   <div className="flex justify-between mb-2">
-                    <span className="text-sm text-gray-600">Tokens Used</span>
-                    <span className="text-sm font-semibold">71,000 / 100,000</span>
+                    <span className="text-sm text-muted-foreground">Tokens Used</span>
+                    <span className="text-sm font-semibold text-foreground">71,000 / 100,000</span>
                   </div>
                   <Progress value={71} className="h-2" />
                 </div>
                 <div>
                   <div className="flex justify-between mb-2">
-                    <span className="text-sm text-gray-600">API Calls</span>
-                    <span className="text-sm font-semibold">12,847</span>
+                    <span className="text-sm text-muted-foreground">API Calls</span>
+                    <span className="text-sm font-semibold text-foreground">12,847</span>
                   </div>
                 </div>
                 <div>
                   <div className="flex justify-between mb-2">
-                    <span className="text-sm text-gray-600">Active Agents</span>
-                    <span className="text-sm font-semibold">5 / 5</span>
+                    <span className="text-sm text-muted-foreground">Active Agents</span>
+                    <span className="text-sm font-semibold text-foreground">5 / 5</span>
                   </div>
                 </div>
                 <div>
                   <div className="flex justify-between mb-2">
-                    <span className="text-sm text-gray-600">Team Members</span>
-                    <span className="text-sm font-semibold">4 / 10</span>
+                    <span className="text-sm text-muted-foreground">Team Members</span>
+                    <span className="text-sm font-semibold text-foreground">4 / 10</span>
                   </div>
                 </div>
                 <div className="pt-4 border-t">
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-600">Estimated Cost</span>
-                    <span className="font-semibold text-lg">$213</span>
+                    <span className="text-sm text-muted-foreground">Estimated Cost</span>
+                    <span className="font-semibold text-lg text-foreground">$213</span>
                   </div>
                 </div>
               </CardContent>
@@ -385,46 +385,46 @@ export default function UserConfig() {
             <CardContent>
               <div className="grid md:grid-cols-3 gap-4">
                 <div className="p-4 border rounded-lg">
-                  <h4 className="font-semibold mb-2">Starter</h4>
-                  <p className="text-2xl font-bold mb-2">
+                  <h4 className="font-semibold mb-2 text-foreground">Starter</h4>
+                  <p className="text-2xl font-bold mb-2 text-foreground">
                     $99<span className="text-sm font-normal">/month</span>
                   </p>
-                  <ul className="text-sm text-gray-600 space-y-1 mb-4">
+                  <ul className="text-sm text-muted-foreground space-y-1 mb-4">
                     <li>• 25,000 tokens/month</li>
                     <li>• 3 AI agents</li>
                     <li>• Up to 5 team members</li>
                     <li>• Basic analytics</li>
                   </ul>
-                  <Button variant="outline" className="w-full bg-transparent">
+                  <Button variant="outline" className="w-full bg-transparent text-foreground">
                     Current Plan
                   </Button>
                 </div>
                 <div className="p-4 border-2 border-blue-500 rounded-lg relative">
                   <Badge className="absolute -top-2 left-4 bg-blue-500">Current</Badge>
-                  <h4 className="font-semibold mb-2">Premium</h4>
-                  <p className="text-2xl font-bold mb-2">
+                  <h4 className="font-semibold mb-2 text-foreground">Premium</h4>
+                  <p className="text-2xl font-bold mb-2 text-foreground">
                     $299<span className="text-sm font-normal">/month</span>
                   </p>
-                  <ul className="text-sm text-gray-600 space-y-1 mb-4">
+                  <ul className="text-sm text-muted-foreground space-y-1 mb-4">
                     <li>• 100,000 tokens/month</li>
                     <li>• 5 AI agents</li>
                     <li>• Up to 10 team members</li>
                     <li>• Advanced analytics</li>
                   </ul>
-                  <Button className="w-full">Current Plan</Button>
+                  <Button className="w-full text-foreground">Current Plan</Button>
                 </div>
                 <div className="p-4 border rounded-lg">
-                  <h4 className="font-semibold mb-2">Enterprise</h4>
-                  <p className="text-2xl font-bold mb-2">
+                  <h4 className="font-semibold mb-2 text-foreground">Enterprise</h4>
+                  <p className="text-2xl font-bold mb-2 text-foreground">
                     $999<span className="text-sm font-normal">/month</span>
                   </p>
-                  <ul className="text-sm text-gray-600 space-y-1 mb-4">
+                  <ul className="text-sm text-muted-foreground space-y-1 mb-4">
                     <li>• 500,000 tokens/month</li>
                     <li>• Unlimited AI agents</li>
                     <li>• Unlimited team members</li>
                     <li>• Custom integrations</li>
                   </ul>
-                  <Button variant="outline" className="w-full bg-transparent">
+                  <Button variant="outline" className="w-full bg-transparent text-foreground">
                     Upgrade
                   </Button>
                 </div>
@@ -446,23 +446,23 @@ export default function UserConfig() {
               <CardContent className="space-y-4">
                 <div className="text-center">
                   <div className="text-3xl font-bold text-blue-600">29,000</div>
-                  <p className="text-gray-600">Tokens Remaining</p>
+                  <p className="text-muted-foreground">Tokens Remaining</p>
                 </div>
                 <div>
                   <div className="flex justify-between mb-2">
-                    <span className="text-sm text-gray-600">Monthly Usage</span>
-                    <span className="text-sm font-semibold">71,000 / 100,000</span>
+                    <span className="text-sm text-muted-foreground">Monthly Usage</span>
+                    <span className="text-sm font-semibold text-foreground">71,000 / 100,000</span>
                   </div>
                   <Progress value={71} className="h-3" />
                 </div>
                 <div className="grid grid-cols-2 gap-4 pt-4 border-t">
                   <div className="text-center">
-                    <div className="text-lg font-semibold">71,000</div>
-                    <p className="text-xs text-gray-600">Used This Month</p>
+                    <div className="text-lg font-semibold text-foreground">71,000</div>
+                    <p className="text-xs text-muted-foreground">Used This Month</p>
                   </div>
                   <div className="text-center">
-                    <div className="text-lg font-semibold">2,847</div>
-                    <p className="text-xs text-gray-600">Daily Average</p>
+                    <div className="text-lg font-semibold text-foreground">2,847</div>
+                    <p className="text-xs text-muted-foreground">Daily Average</p>
                   </div>
                 </div>
               </CardContent>
@@ -477,7 +477,7 @@ export default function UserConfig() {
                 <div className="flex items-center justify-between">
                   <div className="space-y-0.5">
                     <Label>Enable Auto-Replenishment</Label>
-                    <p className="text-sm text-gray-600">Automatically buy tokens when balance is low</p>
+                    <p className="text-sm text-muted-foreground">Automatically buy tokens when balance is low</p>
                   </div>
                   <Switch checked={autoReplenish} onCheckedChange={setAutoReplenish} />
                 </div>
@@ -485,7 +485,7 @@ export default function UserConfig() {
                   <>
                     <div>
                       <Label>Trigger Threshold</Label>
-                      <select className="w-full p-2 border rounded-md mt-1">
+                      <select className="w-full p-2 border rounded-md mt-1 text-foreground">
                         <option>When balance drops below 10,000 tokens</option>
                         <option>When balance drops below 5,000 tokens</option>
                         <option>When balance drops below 2,000 tokens</option>
@@ -493,7 +493,7 @@ export default function UserConfig() {
                     </div>
                     <div>
                       <Label>Purchase Amount</Label>
-                      <select className="w-full p-2 border rounded-md mt-1">
+                      <select className="w-full p-2 border rounded-md mt-1 text-foreground">
                         <option>Professional Pack (50,000 tokens - $99)</option>
                         <option>Starter Pack (10,000 tokens - $29)</option>
                         <option>Enterprise Pack (200,000 tokens - $299)</option>
@@ -524,13 +524,15 @@ export default function UserConfig() {
                     className={`p-4 border rounded-lg relative ${pkg.popular ? "border-blue-500 border-2" : ""}`}
                   >
                     {pkg.popular && <Badge className="absolute -top-2 left-4 bg-blue-500">Most Popular</Badge>}
-                    <h4 className="font-semibold mb-2">{pkg.name}</h4>
-                    <p className="text-2xl font-bold mb-2">${pkg.price}</p>
-                    <p className="text-sm text-gray-600 mb-4">{pkg.tokens.toLocaleString()} tokens</p>
-                    <p className="text-xs text-gray-500 mb-4">
+                    <h4 className="font-semibold mb-2 text-foreground">{pkg.name}</h4>
+                    <p className="text-2xl font-bold mb-2 text-foreground">${pkg.price}</p>
+                    <p className="text-sm text-muted-foreground mb-4">{pkg.tokens.toLocaleString()} tokens</p>
+                    <p className="text-xs text-muted-foreground mb-4">
                       ${((pkg.price / pkg.tokens) * 1000).toFixed(3)} per 1K tokens
                     </p>
-                    <Button className={`w-full ${pkg.popular ? "" : "variant-outline"}`}>Purchase</Button>
+                    <Button className={`w-full ${pkg.popular ? "" : "variant-outline"} text-foreground`}>
+                      Purchase
+                    </Button>
                   </div>
                 ))}
               </div>
@@ -554,14 +556,14 @@ export default function UserConfig() {
                     VISA
                   </div>
                   <div className="flex-1">
-                    <p className="font-medium">•••• •••• •••• 4242</p>
-                    <p className="text-sm text-gray-600">Expires 12/26</p>
+                    <p className="font-medium text-foreground">•••• •••• •••• 4242</p>
+                    <p className="text-sm text-muted-foreground">Expires 12/26</p>
                   </div>
-                  <Button size="sm" variant="outline">
+                  <Button size="sm" variant="outline" className="text-foreground bg-transparent">
                     <Edit className="h-3 w-3" />
                   </Button>
                 </div>
-                <Button variant="outline" className="w-full bg-transparent">
+                <Button variant="outline" className="w-full bg-transparent text-foreground">
                   <Plus className="h-4 w-4 mr-2" />
                   Add Payment Method
                 </Button>
@@ -576,23 +578,23 @@ export default function UserConfig() {
               <CardContent className="space-y-4">
                 <div>
                   <Label>Company Name</Label>
-                  <Input defaultValue="Acme Corporation" />
+                  <Input className="text-foreground" defaultValue="Acme Corporation" />
                 </div>
                 <div>
                   <Label>Address</Label>
-                  <Input defaultValue="123 Business St" />
+                  <Input className="text-foreground" defaultValue="123 Business St" />
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <Label>City</Label>
-                    <Input defaultValue="San Francisco" />
+                    <Input className="text-foreground" defaultValue="San Francisco" />
                   </div>
                   <div>
                     <Label>ZIP Code</Label>
-                    <Input defaultValue="94105" />
+                    <Input className="text-foreground" defaultValue="94105" />
                   </div>
                 </div>
-                <Button className="w-full">Update Address</Button>
+                <Button className="w-full text-foreground">Update Address</Button>
               </CardContent>
             </Card>
           </div>
@@ -617,10 +619,10 @@ export default function UserConfig() {
                   </thead>
                   <tbody>
                     {usageHistory.map((usage, index) => (
-                      <tr key={index} className="border-b hover:bg-gray-50">
-                        <td className="p-3 font-medium">{usage.month}</td>
-                        <td className="p-3">{usage.used.toLocaleString()}</td>
-                        <td className="p-3">{usage.limit.toLocaleString()}</td>
+                      <tr key={index} className="border-b hover:bg-muted/30">
+                        <td className="p-3 font-medium text-foreground">{usage.month}</td>
+                        <td className="p-3 text-foreground">{usage.used.toLocaleString()}</td>
+                        <td className="p-3 text-foreground">{usage.limit.toLocaleString()}</td>
                         <td className="p-3">
                           <div className="flex items-center gap-2">
                             <div className="w-16 bg-gray-200 rounded-full h-2">
@@ -629,10 +631,12 @@ export default function UserConfig() {
                                 style={{ width: `${(usage.used / usage.limit) * 100}%` }}
                               ></div>
                             </div>
-                            <span className="text-sm">{Math.round((usage.used / usage.limit) * 100)}%</span>
+                            <span className="text-sm text-foreground">
+                              {Math.round((usage.used / usage.limit) * 100)}%
+                            </span>
                           </div>
                         </td>
-                        <td className="p-3 font-semibold">${usage.cost}</td>
+                        <td className="p-3 font-semibold text-foreground">${usage.cost}</td>
                         <td className="p-3">
                           <Badge className="bg-green-100 text-green-800">Paid</Badge>
                         </td>
@@ -658,13 +662,13 @@ export default function UserConfig() {
                         <DollarSign className="w-4 h-4 text-blue-600" />
                       </div>
                       <div>
-                        <p className="font-medium">Invoice - {month}</p>
-                        <p className="text-sm text-gray-600">Premium Plan</p>
+                        <p className="font-medium text-foreground">Invoice - {month}</p>
+                        <p className="text-sm text-muted-foreground">Premium Plan</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className="font-semibold">$299.00</span>
-                      <Button size="sm" variant="outline">
+                      <span className="font-semibold text-foreground">$299.00</span>
+                      <Button size="sm" variant="outline" className="text-foreground bg-transparent">
                         Download
                       </Button>
                     </div>

@@ -43,32 +43,32 @@ export default function ChannelManagement() {
   const getChannelIcon = (type: string) => {
     switch (type) {
       case "facebook":
-        return <Facebook className="h-5 w-5 text-blue-600" />
+        return <Facebook className="h-5 w-5 text-primary" />
       case "twitter":
         return <Twitter className="h-5 w-5 text-blue-400" />
       case "instagram":
-        return <Instagram className="h-5 w-5 text-pink-600" />
+        return <Instagram className="h-5 w-5 text-pink-400" />
       case "website":
-        return <Globe className="h-5 w-5 text-gray-600" />
+        return <Globe className="h-5 w-5 text-muted-foreground" />
       case "whatsapp":
-        return <MessageSquare className="h-5 w-5 text-green-600" />
+        return <MessageSquare className="h-5 w-5 text-emerald-400" />
       default:
-        return <Globe className="h-5 w-5 text-gray-600" />
+        return <Globe className="h-5 w-5 text-muted-foreground" />
     }
   }
 
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "connected":
-        return <Badge className="bg-green-100 text-green-800">Connected</Badge>
+        return <Badge className="bg-emerald-900/40 text-emerald-300">Connected</Badge>
       case "pending":
         return <Badge variant="secondary">Pending</Badge>
       case "processing":
-        return <Badge className="bg-yellow-100 text-yellow-800">Processing</Badge>
+        return <Badge className="bg-amber-900/40 text-amber-300">Processing</Badge>
       case "updating":
-        return <Badge className="bg-blue-100 text-blue-800">Updating</Badge>
+        return <Badge className="bg-blue-900/40 text-blue-300">Updating</Badge>
       case "complete":
-        return <Badge className="bg-green-100 text-green-800">Complete</Badge>
+        return <Badge className="bg-emerald-900/40 text-emerald-300">Complete</Badge>
       case "none":
         return <Badge variant="destructive">Not Set</Badge>
       default:
@@ -82,8 +82,8 @@ export default function ChannelManagement() {
       <div className="flex items-center gap-4 mb-8">
         <SidebarTrigger className="-ml-1" />
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Channel Management</h1>
-          <p className="text-gray-600">Connect platforms and manage knowledge bases</p>
+          <h1 className="text-3xl font-bold text-foreground">Channel Management</h1>
+          <p className="text-muted-foreground">Connect platforms and manage knowledge bases</p>
         </div>
       </div>
 
@@ -105,9 +105,9 @@ export default function ChannelManagement() {
               <div className="grid md:grid-cols-3 gap-4">
                 <Card className="cursor-pointer hover:shadow-md transition-shadow border-dashed border-2">
                   <CardContent className="p-6 text-center">
-                    <Facebook className="h-8 w-8 text-blue-600 mx-auto mb-3" />
+                    <Facebook className="h-8 w-8 text-primary mx-auto mb-3" />
                     <h3 className="font-semibold mb-2">Facebook Pages</h3>
-                    <p className="text-sm text-gray-600 mb-4">Connect your Facebook business pages</p>
+                    <p className="text-sm text-muted-foreground mb-4">Connect your Facebook business pages</p>
                     <Button size="sm" className="w-full">
                       <Plus className="h-4 w-4 mr-2" />
                       Connect
@@ -117,9 +117,9 @@ export default function ChannelManagement() {
 
                 <Card className="cursor-pointer hover:shadow-md transition-shadow border-dashed border-2">
                   <CardContent className="p-6 text-center">
-                    <Globe className="h-8 w-8 text-gray-600 mx-auto mb-3" />
+                    <Globe className="h-8 w-8 text-muted-foreground mx-auto mb-3" />
                     <h3 className="font-semibold mb-2">Website Chat</h3>
-                    <p className="text-sm text-gray-600 mb-4">Embed AI chat on your website</p>
+                    <p className="text-sm text-muted-foreground mb-4">Embed AI chat on your website</p>
                     <Button size="sm" className="w-full">
                       <Plus className="h-4 w-4 mr-2" />
                       Connect
@@ -129,9 +129,9 @@ export default function ChannelManagement() {
 
                 <Card className="cursor-pointer hover:shadow-md transition-shadow border-dashed border-2">
                   <CardContent className="p-6 text-center">
-                    <MessageSquare className="h-8 w-8 text-green-600 mx-auto mb-3" />
+                    <MessageSquare className="h-8 w-8 text-emerald-400 mx-auto mb-3" />
                     <h3 className="font-semibold mb-2">WhatsApp Business</h3>
-                    <p className="text-sm text-gray-600 mb-4">Connect WhatsApp Business API</p>
+                    <p className="text-sm text-muted-foreground mb-4">Connect WhatsApp Business API</p>
                     <Button size="sm" className="w-full">
                       <Plus className="h-4 w-4 mr-2" />
                       Connect
@@ -156,17 +156,17 @@ export default function ChannelManagement() {
                       {getChannelIcon(channel.type)}
                       <div>
                         <h3 className="font-semibold">{channel.name}</h3>
-                        <p className="text-sm text-gray-600">{channel.conversations} conversations this week</p>
+                        <p className="text-sm text-muted-foreground">{channel.conversations} conversations this week</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-4">
                       <div className="text-right">
                         <div className="flex items-center gap-2 mb-1">
-                          <span className="text-sm text-gray-600">Status:</span>
+                          <span className="text-sm text-muted-foreground">Status:</span>
                           {getStatusBadge(channel.status)}
                         </div>
                         <div className="flex items-center gap-2">
-                          <span className="text-sm text-gray-600">Knowledge:</span>
+                          <span className="text-sm text-muted-foreground">Knowledge:</span>
                           {getStatusBadge(channel.knowledge)}
                         </div>
                       </div>
@@ -203,7 +203,7 @@ export default function ChannelManagement() {
                   <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
                     <Upload className="h-12 w-12 text-gray-400 mx-auto mb-4" />
                     <h3 className="text-lg font-semibold mb-2">Upload Training Documents</h3>
-                    <p className="text-gray-600 mb-4">Drag and drop files or click to browse</p>
+                    <p className="text-muted-foreground mb-4">Drag and drop files or click to browse</p>
                     <Button>
                       <Upload className="h-4 w-4 mr-2" />
                       Choose Files
@@ -220,7 +220,7 @@ export default function ChannelManagement() {
                         <h4 className="font-medium">{kb.channel}</h4>
                         {getStatusBadge(kb.status)}
                       </div>
-                      <div className="flex items-center justify-between text-sm text-gray-600">
+                      <div className="flex items-center justify-between text-sm text-muted-foreground">
                         <span>{kb.documents} documents</span>
                         <span>Updated {kb.lastUpdate}</span>
                       </div>
@@ -240,22 +240,24 @@ export default function ChannelManagement() {
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
-                <div className="flex items-center gap-3 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                <div className="flex items-center gap-3 p-3 bg-muted/30 border border-yellow-200 rounded-lg">
                   <AlertCircle className="h-5 w-5 text-yellow-600" />
                   <div className="flex-1">
                     <p className="font-medium">Product return policy questions</p>
-                    <p className="text-sm text-gray-600">Facebook Page - 12 unanswered queries in the last 24 hours</p>
+                    <p className="text-sm text-muted-foreground">
+                      Facebook Page - 12 unanswered queries in the last 24 hours
+                    </p>
                   </div>
                   <Button size="sm" variant="outline">
                     Add Knowledge
                   </Button>
                 </div>
 
-                <div className="flex items-center gap-3 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                <div className="flex items-center gap-3 p-3 bg-muted/30 border border-yellow-200 rounded-lg">
                   <AlertCircle className="h-5 w-5 text-yellow-600" />
                   <div className="flex-1">
                     <p className="font-medium">Shipping information for international orders</p>
-                    <p className="text-sm text-gray-600">Website Chat - 8 escalations to human agents</p>
+                    <p className="text-sm text-muted-foreground">Website Chat - 8 escalations to human agents</p>
                   </div>
                   <Button size="sm" variant="outline">
                     Add Knowledge

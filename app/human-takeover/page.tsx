@@ -70,15 +70,15 @@ export default function HumanTakeover() {
   const getChannelIcon = (channel: string) => {
     switch (channel) {
       case "facebook":
-        return <Facebook className="h-4 w-4 text-blue-600" />
+        return <Facebook className="h-4 w-4 text-primary" />
       case "phone":
-        return <Phone className="h-4 w-4 text-green-600" />
+        return <Phone className="h-4 w-4 text-emerald-400" />
       case "website":
-        return <Globe className="h-4 w-4 text-gray-600" />
+        return <Globe className="h-4 w-4 text-muted-foreground" />
       case "instagram":
         return <Instagram className="h-4 w-4 text-pink-600" />
       default:
-        return <MessageSquare className="h-4 w-4 text-gray-600" />
+        return <MessageSquare className="h-4 w-4 text-muted-foreground" />
     }
   }
 
@@ -125,8 +125,8 @@ export default function HumanTakeover() {
       <div className="flex items-center gap-4 mb-6">
         <SidebarTrigger className="-ml-1" />
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Human Takeover Mode</h1>
-          <p className="text-gray-600">Direct access to conversations requiring immediate intervention</p>
+          <h1 className="text-3xl font-bold text-foreground">Human Takeover Mode</h1>
+          <p className="text-muted-foreground">Direct access to conversations requiring immediate intervention</p>
         </div>
       </div>
 
@@ -136,7 +136,7 @@ export default function HumanTakeover() {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <AlertTriangle className="h-5 w-5 text-orange-600" />
+                <AlertTriangle className="h-5 w-5 text-accent" />
                 Active Takeovers ({activeConversations.length})
               </CardTitle>
             </CardHeader>
@@ -145,7 +145,7 @@ export default function HumanTakeover() {
                 {activeConversations.map((conversation) => (
                   <div
                     key={conversation.id}
-                    className={`p-4 cursor-pointer border-l-4 hover:bg-gray-50 ${
+                    className={`p-4 cursor-pointer border-l-4 hover:bg-muted/30 ${
                       selectedConversation.id === conversation.id
                         ? "bg-blue-50 border-l-blue-500"
                         : conversation.priority === "urgent"
@@ -163,8 +163,8 @@ export default function HumanTakeover() {
                       </div>
                       {getPriorityBadge(conversation.priority)}
                     </div>
-                    <p className="text-sm text-gray-600 mb-2">{conversation.issue}</p>
-                    <div className="flex items-center justify-between text-xs text-gray-500">
+                    <p className="text-sm text-muted-foreground mb-2">{conversation.issue}</p>
+                    <div className="flex items-center justify-between text-xs text-muted-foreground">
                       <div className="flex items-center gap-2">
                         <Clock className="h-3 w-3" />
                         <span>{conversation.duration}</span>
@@ -217,9 +217,9 @@ export default function HumanTakeover() {
               </TabsList>
 
               <TabsContent value="conversation" className="flex-1 flex flex-col">
-                <div className="flex-1 p-4 overflow-y-auto bg-gray-50">
+                <div className="flex-1 p-4 overflow-y-auto bg-muted/30">
                   <div className="space-y-4">
-                    <div className="bg-blue-100 p-3 rounded-lg">
+                    <div className="bg-blue-900/40 p-3 rounded-lg">
                       <p className="text-sm font-medium text-blue-800 mb-1">System Alert</p>
                       <p className="text-sm text-blue-700">
                         AI agent escalated this conversation due to payment processing complexity. Customer has been
@@ -229,20 +229,20 @@ export default function HumanTakeover() {
 
                     <div className="bg-white p-3 rounded-lg border-l-4 border-l-gray-400">
                       <div className="flex items-center gap-2 mb-1">
-                        <User className="h-4 w-4 text-gray-600" />
+                        <User className="h-4 w-4 text-muted-foreground" />
                         <span className="font-medium text-sm">{selectedConversation.customer}</span>
-                        <span className="text-xs text-gray-500">10:49 AM</span>
+                        <span className="text-xs text-muted-foreground">10:49 AM</span>
                       </div>
                       <p className="text-sm">{selectedConversation.lastMessage}</p>
                     </div>
 
-                    <div className="bg-green-50 p-3 rounded-lg border-l-4 border-l-green-500">
+                    <div className="bg-emerald-900/30 p-3 rounded-lg border-l-4 border-l-green-500">
                       <div className="flex items-center gap-2 mb-1">
                         <Headphones className="h-4 w-4 text-green-600" />
                         <span className="font-medium text-sm">You (Human Agent)</span>
-                        <span className="text-xs text-gray-500">Now</span>
+                        <span className="text-xs text-muted-foreground">Now</span>
                       </div>
-                      <p className="text-sm italic text-gray-600">Typing...</p>
+                      <p className="text-sm italic text-muted-foreground">Typing...</p>
                     </div>
                   </div>
                 </div>
@@ -277,7 +277,7 @@ export default function HumanTakeover() {
 
               <TabsContent value="ai-history" className="flex-1 p-4 overflow-y-auto">
                 <div className="space-y-3">
-                  <div className="bg-blue-50 p-3 rounded-lg mb-4">
+                  <div className="bg-blue-900/40 p-3 rounded-lg mb-4">
                     <p className="text-sm font-medium text-blue-800">AI Conversation Summary</p>
                     <p className="text-sm text-blue-700 mt-1">
                       Customer reported payment charged but order failed. AI identified payment processing error
@@ -296,14 +296,14 @@ export default function HumanTakeover() {
                     >
                       <div className="flex items-center gap-2 mb-1">
                         {message.role === "customer" ? (
-                          <User className="h-4 w-4 text-gray-600" />
+                          <User className="h-4 w-4 text-muted-foreground" />
                         ) : (
-                          <MessageSquare className="h-4 w-4 text-blue-600" />
+                          <MessageSquare className="h-4 w-4 text-primary" />
                         )}
                         <span className="font-medium text-sm">
                           {message.role === "customer" ? selectedConversation.customer : "AI Agent"}
                         </span>
-                        <span className="text-xs text-gray-500">{message.time}</span>
+                        <span className="text-xs text-muted-foreground">{message.time}</span>
                       </div>
                       <p className="text-sm">{message.message}</p>
                     </div>
@@ -320,19 +320,19 @@ export default function HumanTakeover() {
                     <CardContent className="space-y-3">
                       <div className="grid grid-cols-2 gap-4">
                         <div>
-                          <Label className="text-sm font-medium text-gray-600">Name</Label>
+                          <Label className="text-sm font-medium text-muted-foreground">Name</Label>
                           <p className="text-sm">{selectedConversation.customer}</p>
                         </div>
                         <div>
-                          <Label className="text-sm font-medium text-gray-600">Customer ID</Label>
+                          <Label className="text-sm font-medium text-muted-foreground">Customer ID</Label>
                           <p className="text-sm">CUST-789123</p>
                         </div>
                         <div>
-                          <Label className="text-sm font-medium text-gray-600">Account Status</Label>
+                          <Label className="text-sm font-medium text-muted-foreground">Account Status</Label>
                           <Badge className="bg-green-100 text-green-800">Premium</Badge>
                         </div>
                         <div>
-                          <Label className="text-sm font-medium text-gray-600">Language</Label>
+                          <Label className="text-sm font-medium text-muted-foreground">Language</Label>
                           <p className="text-sm">{selectedConversation.language}</p>
                         </div>
                       </div>
@@ -349,7 +349,7 @@ export default function HumanTakeover() {
                           <span className="text-sm">Order #12345 - $89.99</span>
                           <Badge variant="destructive">Failed</Badge>
                         </div>
-                        <div className="flex justify-between items-center p-2 bg-gray-50 rounded">
+                        <div className="flex justify-between items-center p-2 bg-muted/30 rounded">
                           <span className="text-sm">Order #12344 - $45.50</span>
                           <Badge className="bg-green-100 text-green-800">Completed</Badge>
                         </div>
