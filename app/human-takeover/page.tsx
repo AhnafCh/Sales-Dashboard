@@ -227,7 +227,7 @@ export default function HumanTakeover() {
                       </p>
                     </div>
 
-                    <div className="bg-white p-3 rounded-lg border-l-4 border-l-gray-400">
+                    <div className="bg-gray-50 p-3 rounded-lg border-l-4 border-l-gray-400">
                       <div className="flex items-center gap-2 mb-1">
                         <User className="h-4 w-4 text-muted-foreground" />
                         <span className="font-medium text-sm">{selectedConversation.customer}</span>
@@ -247,7 +247,7 @@ export default function HumanTakeover() {
                   </div>
                 </div>
 
-                <div className="p-4 border-t bg-white">
+                <div className="p-4 border-t bg-gray-50">
                   <div className="flex gap-2">
                     <Textarea placeholder="Type your response to the customer..." className="flex-1 min-h-[60px]" />
                     <div className="flex flex-col gap-2">
