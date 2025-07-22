@@ -48,19 +48,19 @@ export default function Dashboard() {
       <div className="flex items-center gap-4 mb-8">
         <SidebarTrigger className="-ml-1" />
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">UniSense AI Dashboard</h1>
-          <p className="text-gray-600">Manage your AI customer service operations</p>
+          <h1 className="text-3xl font-bold text-foreground">UniSense AI Dashboard</h1>
+          <p className="text-muted-foreground">Manage your AI customer service operations</p>
         </div>
       </div>
 
       {/* Primary Navigation Cards */}
       <div className="grid md:grid-cols-2 gap-6 mb-8">
         <Link href="/channel-management">
-          <Card className="cursor-pointer hover:shadow-lg transition-shadow border-2 hover:border-blue-200">
+          <Card className="cursor-pointer hover:shadow-lg transition-shadow border-2 hover:border-primary">
             <CardHeader>
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-blue-100 rounded-lg">
-                  <Settings className="h-6 w-6 text-blue-600" />
+                <div className="p-2 bg-primary/10 rounded-lg">
+                  <Settings className="h-6 w-6 text-primary" />
                 </div>
                 <div>
                   <CardTitle className="text-xl">Channel Management</CardTitle>
@@ -69,7 +69,7 @@ export default function Dashboard() {
               </div>
             </CardHeader>
             <CardContent>
-              <div className="flex items-center justify-between text-sm text-gray-600">
+              <div className="flex items-center justify-between text-sm text-muted-foreground">
                 <span>5 channels connected</span>
                 <span>3 pending knowledge updates</span>
               </div>
@@ -78,11 +78,11 @@ export default function Dashboard() {
         </Link>
 
         <Link href="/human-takeover">
-          <Card className="cursor-pointer hover:shadow-lg transition-shadow border-2 hover:border-orange-200">
+          <Card className="cursor-pointer hover:shadow-lg transition-shadow border-2 hover:border-accent">
             <CardHeader>
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-orange-100 rounded-lg">
-                  <Users className="h-6 w-6 text-orange-600" />
+                <div className="p-2 bg-accent/10 rounded-lg">
+                  <Users className="h-6 w-6 text-accent" />
                 </div>
                 <div>
                   <CardTitle className="text-xl">Human Takeover Mode</CardTitle>
@@ -91,7 +91,7 @@ export default function Dashboard() {
               </div>
             </CardHeader>
             <CardContent>
-              <div className="flex items-center justify-between text-sm text-gray-600">
+              <div className="flex items-center justify-between text-sm text-muted-foreground">
                 <span>7 active takeovers</span>
                 <Badge variant="destructive">3 urgent</Badge>
               </div>
@@ -131,7 +131,7 @@ export default function Dashboard() {
                 <CardHeader className="pb-3">
                   <div className="flex items-center justify-between">
                     <CardTitle className="text-sm font-medium">{agent.name}</CardTitle>
-                    <Badge variant={agent.status === "active" ? "default" : "destructive"} className="text-xs">
+                    <Badge variant={agent.status === "active" ? "success" : "warning"} className="text-xs">
                       {agent.status}
                     </Badge>
                   </div>
@@ -139,24 +139,24 @@ export default function Dashboard() {
                 <CardContent className="pt-0">
                   <div className="space-y-3">
                     <div>
-                      <div className="flex justify-between text-xs text-gray-600 mb-1">
+                      <div className="flex justify-between text-xs text-muted-foreground mb-1">
                         <span>Active Conversations</span>
                         <span>{agent.conversations}</span>
                       </div>
                     </div>
                     <div>
-                      <div className="flex justify-between text-xs text-gray-600 mb-1">
+                      <div className="flex justify-between text-xs text-muted-foreground mb-1">
                         <span>Token Usage</span>
                         <span>{agent.tokens}%</span>
                       </div>
-                      <Progress value={agent.tokens} className="h-2" />
+                      <Progress value={agent.tokens} className="h-2 bg-muted" />
                     </div>
                     <div>
-                      <div className="flex justify-between text-xs text-gray-600 mb-1">
+                      <div className="flex justify-between text-xs text-muted-foreground mb-1">
                         <span>Performance</span>
                         <span>{agent.performance}%</span>
                       </div>
-                      <Progress value={agent.performance} className="h-2" />
+                      <Progress value={agent.performance} className="h-2 bg-muted" />
                     </div>
                   </div>
                 </CardContent>
@@ -176,7 +176,7 @@ export default function Dashboard() {
           <CardContent>
             <div className="text-2xl font-bold">1,247</div>
             <p className="text-xs text-muted-foreground">
-              <TrendingUp className="h-3 w-3 inline mr-1" />
+              <TrendingUp className="h-3 w-3 inline mr-1 text-success" />
               +12% from last hour
             </p>
           </CardContent>
@@ -204,7 +204,7 @@ export default function Dashboard() {
           <CardContent>
             <div className="text-2xl font-bold">94.2%</div>
             <p className="text-xs text-muted-foreground">
-              <TrendingUp className="h-3 w-3 inline mr-1" />
+              <TrendingUp className="h-3 w-3 inline mr-1 text-success" />
               +2.1% from yesterday
             </p>
           </CardContent>
@@ -216,7 +216,7 @@ export default function Dashboard() {
             <Zap className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-green-600">Optimal</div>
+            <div className="text-2xl font-bold text-success">Optimal</div>
             <p className="text-xs text-muted-foreground">
               <Globe className="h-3 w-3 inline mr-1" />
               All systems operational
@@ -256,10 +256,10 @@ export default function Dashboard() {
                   </div>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-1">
-                      <Star className="h-3 w-3 text-yellow-400 fill-current" />
+                      <Star className="h-3 w-3 text-accent fill-current" />
                       <span className="text-sm font-medium">{product.rating}</span>
                     </div>
-                    <span className="text-lg font-bold text-green-600">${product.price}</span>
+                    <span className="text-lg font-bold text-primary">${product.price}</span>
                   </div>
                 </CardContent>
               </Card>

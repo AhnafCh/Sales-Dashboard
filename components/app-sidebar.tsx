@@ -116,8 +116,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                       <span>{item.title}</span>
                       {item.badge && (
                         <Badge
-                          variant={item.badge === "Live" ? "default" : "secondary"}
-                          className={`ml-auto ${item.badge === "Live" ? "bg-green-100 text-green-800" : ""}`}
+                          variant={item.badge === "Live" ? "success" : "secondary"}
+                          className={`ml-auto ${item.badge === "Live" ? "bg-success text-success-foreground" : ""}`}
                         >
                           {item.badge}
                         </Badge>
@@ -139,7 +139,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 <SidebarMenuItem key={agent.name}>
                   <SidebarMenuButton>
                     <div
-                      className={`w-2 h-2 rounded-full ${agent.status === "active" ? "bg-green-500" : "bg-yellow-500"}`}
+                      className={`w-2 h-2 rounded-full ${agent.status === "active" ? "bg-success" : "bg-warning"}`}
                     />
                     <span>{agent.name}</span>
                     <div className="ml-auto flex items-center gap-1">
@@ -183,7 +183,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <SidebarMenuButton>
-                  <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
+                  <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
                     <User className="size-4" />
                   </div>
                   <div className="grid flex-1 text-left text-sm leading-tight">
