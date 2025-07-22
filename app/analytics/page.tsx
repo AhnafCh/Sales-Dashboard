@@ -397,15 +397,15 @@ export default function Analytics() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  <div className="flex justify-between items-center p-3 bg-blue-50 rounded-lg">
+                  <div className="flex justify-between items-center p-3 bg-blue-100 rounded-lg">
                     <span className="font-medium">New Users</span>
                     <span className="text-2xl font-bold text-primary">2,847</span>
                   </div>
-                  <div className="flex justify-between items-center p-3 bg-green-50 rounded-lg">
+                  <div className="flex justify-between items-center p-3 bg-green-100 rounded-lg">
                     <span className="font-medium">Returning Users</span>
                     <span className="text-2xl font-bold text-emerald-400">8,234</span>
                   </div>
-                  <div className="flex justify-between items-center p-3 bg-purple-50 rounded-lg">
+                  <div className="flex justify-between items-center p-3 bg-purple-100 rounded-lg">
                     <span className="font-medium">Active Sessions</span>
                     <span className="text-2xl font-bold text-purple-400">1,456</span>
                   </div>
