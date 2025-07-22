@@ -147,7 +147,7 @@ export default function HumanTakeover() {
                     key={conversation.id}
                     className={`p-4 cursor-pointer border-l-4 hover:bg-muted/30 ${
                       selectedConversation.id === conversation.id
-                        ? "bg-blue-50 border-l-blue-500"
+                        ? "bg-blue-100 border-l-blue-500"
                         : conversation.priority === "urgent"
                           ? "border-l-red-500"
                           : conversation.priority === "high"
@@ -291,7 +291,7 @@ export default function HumanTakeover() {
                       className={`p-3 rounded-lg ${
                         message.role === "customer"
                           ? "bg-gray-100 border-l-4 border-l-gray-400"
-                          : "bg-blue-50 border-l-4 border-l-blue-400"
+                          : "bg-blue-100 border-l-4 border-l-blue-400"
                       }`}
                     >
                       <div className="flex items-center gap-2 mb-1">
