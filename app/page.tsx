@@ -78,7 +78,7 @@ export default function Dashboard() {
         </Link>
 
         <Link href="/human-takeover">
-          <Card className="cursor-pointer hover:shadow-lg transition-shadow border-2 hover:border-bg-red-700">
+          <Card className="cursor-pointer hover:shadow-lg transition-shadow border-2 hover:border-accent/50">
             <CardHeader>
               <div className="flex items-center gap-3">
                 <div className="p-2 bg-accent/10 rounded-lg">
