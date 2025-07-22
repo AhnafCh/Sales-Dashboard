@@ -80,7 +80,14 @@ const navigationItems = [
   },
 ]
 
-
+// AI Agents
+const aiAgents = [
+  { name: "Sales", status: "active", conversations: 24, performance: 94, icon: MessageSquare },
+  { name: "Telco", status: "active", conversations: 18, performance: 91, icon: MessageSquare },
+  { name: "Onboarding", status: "active", conversations: 12, performance: 96, icon: MessageSquare },
+  { name: "AirVoice", status: "warning", conversations: 8, performance: 78, icon: MessageSquare },
+  { name: "Support", status: "active", conversations: 31, performance: 89, icon: MessageSquare },
+]
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const pathname = usePathname()
@@ -147,35 +154,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </SidebarGroupContent>
         </SidebarGroup>
 
-        {/* AI Agents Status */}
-        <SidebarGroup>
-          <SidebarGroupLabel className="text-sidebar-foreground/70">AI Agents</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {aiAgents.map((agent) => (
-                <SidebarMenuItem key={agent.name}>
-                  <SidebarMenuButton
-                    tooltip={state === "collapsed" ? `${agent.name} - ${agent.conversations} conversations` : undefined}
-                    className="text-sidebar-foreground hover:text-sidebar-accent-foreground"
-                  >
-                    <div className="flex items-center gap-2">
-                      <agent.icon className="h-4 w-4" />
-                      <div
-                        className={`w-2 h-2 rounded-full ${
-                          agent.status === "active" ? "bg-emerald-500" : "bg-amber-500"
-                        } group-data-[collapsible=icon]:hidden`}
-                      />
-                    </div>
-                    <span className="group-data-[collapsible=icon]:hidden">{agent.name}</span>
-                    <div className="ml-auto flex items-center gap-1 group-data-[collapsible=icon]:hidden">
-                      <span className="text-xs text-sidebar-foreground/70">{agent.conversations}</span>
-                    </div>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
+        
 
         {/* Quick Actions */}
         <SidebarGroup>
