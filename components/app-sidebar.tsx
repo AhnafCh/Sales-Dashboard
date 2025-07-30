@@ -32,7 +32,7 @@ import { Button } from "@/components/ui/button"
 // This is sample data.
 const data = {
   user: {
-    name: "shadcn",
+    name: "Jake M.",
     email: "m@example.com",
     avatar: "/avatars/shadcn.jpg",
   },
