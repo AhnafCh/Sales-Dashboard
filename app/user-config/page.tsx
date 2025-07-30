@@ -7,678 +7,247 @@ import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Progress } from "@/components/ui/progress"
-import { User, CreditCard, Plus, Trash2, Edit, Crown, Zap, DollarSign, Shield } from "lucide-react"
+import { SidebarTrigger } from "@/components/ui/sidebar"
+import { Users, CreditCard, Bell, Shield, Package, Plus, Check, Star } from "lucide-react"
 
 export default function UserConfig() {
-  const [autoReplenish, setAutoReplenish] = useState(true)
-  const [teamMembers] = useState([
-    { id: 1, name: "John Doe", email: "john@company.com", role: "Admin", status: "active", joinDate: "2024-01-15" },
-    {
-      id: 2,
-      name: "Sarah Wilson",
-      email: "sarah@company.com",
-      role: "Manager",
-      status: "active",
-      joinDate: "2024-02-01",
-    },
-    { id: 3, name: "Mike Johnson", email: "mike@company.com", role: "Agent", status: "active", joinDate: "2024-02-15" },
-    { id: 4, name: "Emma Davis", email: "emma@company.com", role: "Agent", status: "pending", joinDate: "2024-03-01" },
-  ])
+  const [notifications, setNotifications] = useState({
+    email: true,
+    push: false,
+    sms: true,
+  })
 
-  const [tokenPackages] = useState([
-    { id: 1, name: "Starter Pack", tokens: 10000, price: 29, popular: false },
-    { id: 2, name: "Professional Pack", tokens: 50000, price: 99, popular: true },
-    { id: 3, name: "Enterprise Pack", tokens: 200000, price: 299, popular: false },
-    { id: 4, name: "Unlimited Pack", tokens: 1000000, price: 999, popular: false },
-  ])
+  const [autoReplenish, setAutoReplenish] = useState(false)
 
-  const [usageHistory] = useState([
-    { month: "January", used: 45000, limit: 100000, cost: 135 },
-    { month: "February", used: 62000, limit: 100000, cost: 186 },
-    { month: "March", used: 38000, limit: 100000, cost: 114 },
-    { month: "April", used: 71000, limit: 100000, cost: 213 },
-  ])
+  const tokenPackages = [
+    { name: "Starter Pack", tokens: 10000, price: 29, popular: false },
+    { name: "Professional Pack", tokens: 50000, price: 99, popular: true },
+    { name: "Enterprise Pack", tokens: 200000, price: 299, popular: false },
+  ]
 
-  const getRoleBadge = (role: string) => {
-    switch (role) {
-      case "Admin":
-        return (
-          <Badge className="bg-red-100 text-red-800">
-            <Crown className="w-3 h-3 mr-1" />
-            Admin
-          </Badge>
-        )
-      case "Manager":
-        return (
-          <Badge className="bg-blue-900/40 text-blue-300">
-            <Shield className="w-3 h-3 mr-1" />
-            Manager
-          </Badge>
-        )
-      case "Agent":
-        return (
-          <Badge variant="secondary">
-            <User className="w-3 h-3 mr-1" />
-            Agent
-          </Badge>
-        )
-      default:
-        return <Badge variant="outline">{role}</Badge>
-    }
+  const currentSubscription = {
+    plan: "Professional",
+    tokensUsed: 32500,
+    tokensTotal: 50000,
+    renewalDate: "2024-02-15",
+    status: "active",
   }
 
-  const getStatusBadge = (status: string) => {
-    switch (status) {
-      case "active":
-        return <Badge className="bg-emerald-900/40 text-emerald-300">Active</Badge>
-      case "pending":
-        return <Badge className="bg-amber-900/40 text-amber-300">Pending</Badge>
-      case "inactive":
-        return <Badge variant="secondary">Inactive</Badge>
-      default:
-        return <Badge variant="outline">{status}</Badge>
-    }
-  }
+  const teamAffiliations = [
+    { name: "Sales Team", role: "Member", status: "active" },
+    { name: "Support Team", role: "Admin", status: "active" },
+    { name: "Marketing Team", role: "Member", status: "pending" },
+  ]
 
   return (
     <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
       {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-foreground">Account Settings</h1>
-        <p className="text-muted-foreground">Manage your profile, team, and subscription settings</p>
+      <div className="flex items-center gap-4 mb-8">
+        <SidebarTrigger className="-ml-1" />
+        <div>
+          <h1 className="text-3xl font-bold text-foreground">User Configuration</h1>
+          <p className="text-muted-foreground">Manage your account settings and preferences</p>
+        </div>
       </div>
 
-      <Tabs defaultValue="profile" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-5">
-          <TabsTrigger value="profile">Profile</TabsTrigger>
-          <TabsTrigger value="team">Team</TabsTrigger>
-          <TabsTrigger value="subscription">Subscription</TabsTrigger>
-          <TabsTrigger value="tokens">Tokens</TabsTrigger>
-          <TabsTrigger value="billing">Billing</TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="profile" className="space-y-6">
-          <div className="grid lg:grid-cols-2 gap-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Personal Information</CardTitle>
-                <CardDescription>Update your personal details and contact information</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label>First Name</Label>
-                    <Input className="text-foreground" defaultValue="John" />
-                  </div>
-                  <div>
-                    <Label>Last Name</Label>
-                    <Input className="text-foreground" defaultValue="Doe" />
-                  </div>
-                </div>
-                <div>
-                  <Label>Email Address</Label>
-                  <Input className="text-foreground" type="email" defaultValue="john.doe@company.com" />
-                </div>
-                <div>
-                  <Label>Phone Number</Label>
-                  <Input className="text-foreground" type="tel" defaultValue="+1 (555) 123-4567" />
-                </div>
-                <div>
-                  <Label>Company</Label>
-                  <Input className="text-foreground" defaultValue="Acme Corporation" />
-                </div>
-                <div>
-                  <Label>Job Title</Label>
-                  <Input className="text-foreground" defaultValue="Customer Success Manager" />
-                </div>
-                <Button className="w-full text-foreground">Save Changes</Button>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Account Preferences</CardTitle>
-                <CardDescription>Configure your account settings and preferences</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <div className="space-y-0.5">
-                    <Label>Email Notifications</Label>
-                    <p className="text-sm text-muted-foreground">Receive email alerts for important events</p>
-                  </div>
-                  <Switch defaultChecked />
-                </div>
-                <div className="flex items-center justify-between">
-                  <div className="space-y-0.5">
-                    <Label>SMS Notifications</Label>
-                    <p className="text-sm text-muted-foreground">Get SMS alerts for urgent issues</p>
-                  </div>
-                  <Switch />
-                </div>
-                <div className="flex items-center justify-between">
-                  <div className="space-y-0.5">
-                    <Label>Weekly Reports</Label>
-                    <p className="text-sm text-muted-foreground">Receive weekly performance summaries</p>
-                  </div>
-                  <Switch defaultChecked />
-                </div>
-                <div className="flex items-center justify-between">
-                  <div className="space-y-0.5">
-                    <Label>Marketing Communications</Label>
-                    <p className="text-sm text-muted-foreground">Receive product updates and tips</p>
-                  </div>
-                  <Switch />
-                </div>
-                <div>
-                  <Label>Time Zone</Label>
-                  <select className="w-full p-2 border rounded-md mt-1 text-foreground">
-                    <option>UTC-8 (Pacific Time)</option>
-                    <option>UTC-5 (Eastern Time)</option>
-                    <option>UTC+0 (GMT)</option>
-                    <option>UTC+1 (Central European Time)</option>
-                  </select>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </TabsContent>
-
-        <TabsContent value="team" className="space-y-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <h3 className="text-lg font-semibold">Team Members</h3>
-              <p className="text-muted-foreground">Manage your team and their access permissions</p>
-            </div>
-            <Button className="text-foreground">
-              <Plus className="h-4 w-4 mr-2" />
-              Invite Member
-            </Button>
-          </div>
-
-          <Card>
-            <CardContent className="p-0">
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead className="border-b">
-                    <tr>
-                      <th className="text-left p-4">Member</th>
-                      <th className="text-left p-4">Role</th>
-                      <th className="text-left p-4">Status</th>
-                      <th className="text-left p-4">Join Date</th>
-                      <th className="text-left p-4">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {teamMembers.map((member) => (
-                      <tr key={member.id} className="border-b hover:bg-muted/30">
-                        <td className="p-4">
-                          <div className="flex items-center gap-3">
-                            <div className="w-8 h-8 bg-blue-900/40 rounded-full flex items-center justify-center">
-                              <User className="w-4 h-4 text-blue-300" />
-                            </div>
-                            <div>
-                              <p className="font-medium">{member.name}</p>
-                              <p className="text-sm text-muted-foreground">{member.email}</p>
-                            </div>
-                          </div>
-                        </td>
-                        <td className="p-4">{getRoleBadge(member.role)}</td>
-                        <td className="p-4">{getStatusBadge(member.status)}</td>
-                        <td className="p-4 text-sm text-muted-foreground">{member.joinDate}</td>
-                        <td className="p-4">
-                          <div className="flex items-center gap-2">
-                            <Button size="sm" variant="outline" className="text-foreground bg-transparent">
-                              <Edit className="h-3 w-3" />
-                            </Button>
-                            <Button size="sm" variant="outline" className="text-foreground bg-transparent">
-                              <Trash2 className="h-3 w-3" />
-                            </Button>
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Team Permissions</CardTitle>
-              <CardDescription>Configure role-based access controls</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div className="grid md:grid-cols-3 gap-4">
-                  <div className="p-4 border rounded-lg">
-                    <h4 className="font-semibold mb-2 flex items-center gap-2">
-                      <Crown className="w-4 h-4 text-red-600" />
-                      Admin
-                    </h4>
-                    <ul className="text-sm text-muted-foreground space-y-1">
-                      <li>• Full system access</li>
-                      <li>• Manage team members</li>
-                      <li>• Billing and subscriptions</li>
-                      <li>• System configuration</li>
-                    </ul>
-                  </div>
-                  <div className="p-4 border rounded-lg">
-                    <h4 className="font-semibold mb-2 flex items-center gap-2">
-                      <Shield className="w-4 h-4 text-blue-600" />
-                      Manager
-                    </h4>
-                    <ul className="text-sm text-muted-foreground space-y-1">
-                      <li>• Monitor conversations</li>
-                      <li>• Manage AI agents</li>
-                      <li>• View analytics</li>
-                      <li>• Human takeover</li>
-                    </ul>
-                  </div>
-                  <div className="p-4 border rounded-lg">
-                    <h4 className="font-semibold mb-2 flex items-center gap-2">
-                      <User className="w-4 h-4 text-muted-foreground" />
-                      Agent
-                    </h4>
-                    <ul className="text-sm text-muted-foreground space-y-1">
-                      <li>• Handle conversations</li>
-                      <li>• View customer info</li>
-                      <li>• Basic reporting</li>
-                      <li>• Limited access</li>
-                    </ul>
-                  </div>
+      <div className="grid gap-6">
+        {/* Current Subscription */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <CreditCard className="h-5 w-5" />
+              Current Subscription
+            </CardTitle>
+            <CardDescription>Your current plan and usage details</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="grid md:grid-cols-3 gap-4">
+              <div className="space-y-2">
+                <Label className="text-sm font-medium">Plan</Label>
+                <div className="flex items-center gap-2">
+                  <Badge variant="default">{currentSubscription.plan}</Badge>
+                  <Badge variant={currentSubscription.status === "active" ? "default" : "secondary"}>
+                    {currentSubscription.status}
+                  </Badge>
                 </div>
               </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="subscription" className="space-y-6">
-          <div className="grid lg:grid-cols-2 gap-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Crown className="h-5 w-5 text-yellow-600" />
-                  Current Plan
-                </CardTitle>
-                <CardDescription>Your active subscription details</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <span className="font-semibold text-lg text-foreground">Premium Plan</span>
-                  <Badge className="bg-yellow-100 text-yellow-800">Active</Badge>
+              <div className="space-y-2">
+                <Label className="text-sm font-medium">Token Usage</Label>
+                <div className="text-2xl font-bold">
+                  {currentSubscription.tokensUsed.toLocaleString()} / {currentSubscription.tokensTotal.toLocaleString()}
                 </div>
-                <div className="space-y-2">
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Monthly Price</span>
-                    <span className="font-semibold text-foreground">$299/month</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Token Allowance</span>
-                    <span className="font-semibold text-foreground">100,000 tokens</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Team Members</span>
-                    <span className="font-semibold text-foreground">Up to 10</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Next Billing</span>
-                    <span className="font-semibold text-foreground">April 15, 2024</span>
-                  </div>
-                </div>
-                <div className="pt-4 border-t">
-                  <Button className="w-full bg-transparent text-foreground" variant="outline">
-                    Change Plan
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Usage Overview</CardTitle>
-                <CardDescription>Current month usage statistics</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div>
-                  <div className="flex justify-between mb-2">
-                    <span className="text-sm text-muted-foreground">Tokens Used</span>
-                    <span className="text-sm font-semibold text-foreground">71,000 / 100,000</span>
-                  </div>
-                  <Progress value={71} className="h-2" />
-                </div>
-                <div>
-                  <div className="flex justify-between mb-2">
-                    <span className="text-sm text-muted-foreground">API Calls</span>
-                    <span className="text-sm font-semibold text-foreground">12,847</span>
-                  </div>
-                </div>
-                <div>
-                  <div className="flex justify-between mb-2">
-                    <span className="text-sm text-muted-foreground">Active Agents</span>
-                    <span className="text-sm font-semibold text-foreground">5 / 5</span>
-                  </div>
-                </div>
-                <div>
-                  <div className="flex justify-between mb-2">
-                    <span className="text-sm text-muted-foreground">Team Members</span>
-                    <span className="text-sm font-semibold text-foreground">4 / 10</span>
-                  </div>
-                </div>
-                <div className="pt-4 border-t">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-muted-foreground">Estimated Cost</span>
-                    <span className="font-semibold text-lg text-foreground">$213</span>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Available Plans</CardTitle>
-              <CardDescription>Upgrade or downgrade your subscription</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid md:grid-cols-3 gap-4">
-                <div className="p-4 border rounded-lg">
-                  <h4 className="font-semibold mb-2 text-foreground">Starter</h4>
-                  <p className="text-2xl font-bold mb-2 text-foreground">
-                    $99<span className="text-sm font-normal">/month</span>
-                  </p>
-                  <ul className="text-sm text-muted-foreground space-y-1 mb-4">
-                    <li>• 25,000 tokens/month</li>
-                    <li>• 3 AI agents</li>
-                    <li>• Up to 5 team members</li>
-                    <li>• Basic analytics</li>
-                  </ul>
-                  <Button variant="outline" className="w-full bg-transparent text-foreground">
-                    Current Plan
-                  </Button>
-                </div>
-                <div className="p-4 border-2 border-blue-500 rounded-lg relative">
-                  <Badge className="absolute -top-2 left-4 bg-blue-500">Current</Badge>
-                  <h4 className="font-semibold mb-2 text-foreground">Premium</h4>
-                  <p className="text-2xl font-bold mb-2 text-foreground">
-                    $299<span className="text-sm font-normal">/month</span>
-                  </p>
-                  <ul className="text-sm text-muted-foreground space-y-1 mb-4">
-                    <li>• 100,000 tokens/month</li>
-                    <li>• 5 AI agents</li>
-                    <li>• Up to 10 team members</li>
-                    <li>• Advanced analytics</li>
-                  </ul>
-                  <Button className="w-full text-foreground">Current Plan</Button>
-                </div>
-                <div className="p-4 border rounded-lg">
-                  <h4 className="font-semibold mb-2 text-foreground">Enterprise</h4>
-                  <p className="text-2xl font-bold mb-2 text-foreground">
-                    $999<span className="text-sm font-normal">/month</span>
-                  </p>
-                  <ul className="text-sm text-muted-foreground space-y-1 mb-4">
-                    <li>• 500,000 tokens/month</li>
-                    <li>• Unlimited AI agents</li>
-                    <li>• Unlimited team members</li>
-                    <li>• Custom integrations</li>
-                  </ul>
-                  <Button variant="outline" className="w-full bg-transparent text-foreground">
-                    Upgrade
-                  </Button>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="tokens" className="space-y-6">
-          <div className="grid lg:grid-cols-2 gap-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Zap className="h-5 w-5 text-yellow-600" />
-                  Token Balance
-                </CardTitle>
-                <CardDescription>Your current token usage and balance</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-blue-600">29,000</div>
-                  <p className="text-muted-foreground">Tokens Remaining</p>
-                </div>
-                <div>
-                  <div className="flex justify-between mb-2">
-                    <span className="text-sm text-muted-foreground">Monthly Usage</span>
-                    <span className="text-sm font-semibold text-foreground">71,000 / 100,000</span>
-                  </div>
-                  <Progress value={71} className="h-3" />
-                </div>
-                <div className="grid grid-cols-2 gap-4 pt-4 border-t">
-                  <div className="text-center">
-                    <div className="text-lg font-semibold text-foreground">71,000</div>
-                    <p className="text-xs text-muted-foreground">Used This Month</p>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-lg font-semibold text-foreground">2,847</div>
-                    <p className="text-xs text-muted-foreground">Daily Average</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Auto-Replenishment</CardTitle>
-                <CardDescription>Automatically purchase tokens when running low</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <div className="space-y-0.5">
-                    <Label>Enable Auto-Replenishment</Label>
-                    <p className="text-sm text-muted-foreground">Automatically buy tokens when balance is low</p>
-                  </div>
-                  <Switch checked={autoReplenish} onCheckedChange={setAutoReplenish} />
-                </div>
-                {autoReplenish && (
-                  <>
-                    <div>
-                      <Label>Trigger Threshold</Label>
-                      <select className="w-full p-2 border rounded-md mt-1 text-foreground">
-                        <option>When balance drops below 10,000 tokens</option>
-                        <option>When balance drops below 5,000 tokens</option>
-                        <option>When balance drops below 2,000 tokens</option>
-                      </select>
-                    </div>
-                    <div>
-                      <Label>Purchase Amount</Label>
-                      <select className="w-full p-2 border rounded-md mt-1 text-foreground">
-                        <option>Professional Pack (50,000 tokens - $99)</option>
-                        <option>Starter Pack (10,000 tokens - $29)</option>
-                        <option>Enterprise Pack (200,000 tokens - $299)</option>
-                      </select>
-                    </div>
-                    <div className="p-3 bg-blue-50 rounded-lg">
-                      <p className="text-sm text-blue-800">
-                        <strong>Next auto-purchase:</strong> Professional Pack will be purchased when your balance drops
-                        below 10,000 tokens.
-                      </p>
-                    </div>
-                  </>
-                )}
-              </CardContent>
-            </Card>
-          </div>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Purchase Additional Tokens</CardTitle>
-              <CardDescription>Buy token packages to extend your usage</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-                {tokenPackages.map((pkg) => (
+                <div className="w-full bg-muted rounded-full h-2">
                   <div
-                    key={pkg.id}
-                    className={`p-4 border rounded-lg relative ${pkg.popular ? "border-blue-500 border-2" : ""}`}
-                  >
-                    {pkg.popular && <Badge className="absolute -top-2 left-4 bg-blue-500">Most Popular</Badge>}
-                    <h4 className="font-semibold mb-2 text-foreground">{pkg.name}</h4>
-                    <p className="text-2xl font-bold mb-2 text-foreground">${pkg.price}</p>
-                    <p className="text-sm text-muted-foreground mb-4">{pkg.tokens.toLocaleString()} tokens</p>
-                    <p className="text-xs text-muted-foreground mb-4">
-                      ${((pkg.price / pkg.tokens) * 1000).toFixed(3)} per 1K tokens
-                    </p>
-                    <Button className={`w-full ${pkg.popular ? "" : "variant-outline"} text-foreground`}>
+                    className="bg-primary h-2 rounded-full"
+                    style={{ width: `${(currentSubscription.tokensUsed / currentSubscription.tokensTotal) * 100}%` }}
+                  />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <Label className="text-sm font-medium">Next Renewal</Label>
+                <div className="text-lg font-semibold">{currentSubscription.renewalDate}</div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Token Packages */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Package className="h-5 w-5" />
+              Purchase Additional Tokens
+            </CardTitle>
+            <CardDescription>Buy extra token packages or set up automated replenishment</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            {/* Auto-replenish Toggle */}
+            <div className="flex items-center justify-between p-4 border rounded-lg">
+              <div className="space-y-1">
+                <Label className="text-sm font-medium">Automated Token Replenishment</Label>
+                <p className="text-sm text-muted-foreground">
+                  Automatically purchase tokens when your balance runs low
+                </p>
+              </div>
+              <Switch checked={autoReplenish} onCheckedChange={setAutoReplenish} />
+            </div>
+
+            {/* Token Packages Grid */}
+            <div className="grid md:grid-cols-3 gap-4">
+              {tokenPackages.map((pkg, index) => (
+                <Card key={index} className={`relative ${pkg.popular ? "border-primary" : ""}`}>
+                  {pkg.popular && (
+                    <div className="absolute -top-2 left-1/2 transform -translate-x-1/2">
+                      <Badge className="bg-primary text-primary-foreground">
+                        <Star className="h-3 w-3 mr-1" />
+                        Popular
+                      </Badge>
+                    </div>
+                  )}
+                  <CardContent className="p-6 text-center">
+                    <h3 className="font-semibold text-lg mb-2">{pkg.name}</h3>
+                    <div className="text-3xl font-bold mb-2">${pkg.price}</div>
+                    <p className="text-muted-foreground mb-4">{pkg.tokens.toLocaleString()} tokens</p>
+                    <Button className="w-full" variant={pkg.popular ? "default" : "outline"}>
+                      <Plus className="h-4 w-4 mr-2" />
                       Purchase
                     </Button>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Team Affiliations */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Users className="h-5 w-5" />
+              Team Affiliations
+            </CardTitle>
+            <CardDescription>Manage your team memberships and roles</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {teamAffiliations.map((team, index) => (
+                <div key={index} className="flex items-center justify-between p-4 border rounded-lg">
+                  <div className="space-y-1">
+                    <div className="font-medium">{team.name}</div>
+                    <div className="text-sm text-muted-foreground">Role: {team.role}</div>
                   </div>
-                ))}
+                  <div className="flex items-center gap-2">
+                    <Badge variant={team.status === "active" ? "default" : "secondary"}>
+                      {team.status === "active" && <Check className="h-3 w-3 mr-1" />}
+                      {team.status}
+                    </Badge>
+                    <Button variant="outline" size="sm">
+                      Manage
+                    </Button>
+                  </div>
+                </div>
+              ))}
+              <Button variant="outline" className="w-full bg-transparent">
+                <Plus className="h-4 w-4 mr-2" />
+                Join New Team
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Notification Settings */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Bell className="h-5 w-5" />
+              Notification Preferences
+            </CardTitle>
+            <CardDescription>Configure how you receive notifications</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="flex items-center justify-between">
+              <div className="space-y-1">
+                <Label className="text-sm font-medium">Email Notifications</Label>
+                <p className="text-sm text-muted-foreground">Receive updates via email</p>
               </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="billing" className="space-y-6">
-          <div className="grid lg:grid-cols-2 gap-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <CreditCard className="h-5 w-5" />
-                  Payment Method
-                </CardTitle>
-                <CardDescription>Manage your billing information</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex items-center gap-3 p-3 border rounded-lg">
-                  <div className="w-10 h-6 bg-blue-600 rounded flex items-center justify-center text-white text-xs font-bold">
-                    VISA
-                  </div>
-                  <div className="flex-1">
-                    <p className="font-medium text-foreground">•••• •••• •••• 4242</p>
-                    <p className="text-sm text-muted-foreground">Expires 12/26</p>
-                  </div>
-                  <Button size="sm" variant="outline" className="text-foreground bg-transparent">
-                    <Edit className="h-3 w-3" />
-                  </Button>
-                </div>
-                <Button variant="outline" className="w-full bg-transparent text-foreground">
-                  <Plus className="h-4 w-4 mr-2" />
-                  Add Payment Method
-                </Button>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Billing Address</CardTitle>
-                <CardDescription>Your billing information</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div>
-                  <Label>Company Name</Label>
-                  <Input className="text-foreground" defaultValue="Acme Corporation" />
-                </div>
-                <div>
-                  <Label>Address</Label>
-                  <Input className="text-foreground" defaultValue="123 Business St" />
-                </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label>City</Label>
-                    <Input className="text-foreground" defaultValue="San Francisco" />
-                  </div>
-                  <div>
-                    <Label>ZIP Code</Label>
-                    <Input className="text-foreground" defaultValue="94105" />
-                  </div>
-                </div>
-                <Button className="w-full text-foreground">Update Address</Button>
-              </CardContent>
-            </Card>
-          </div>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Usage History</CardTitle>
-              <CardDescription>Your monthly usage and billing history</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead className="border-b">
-                    <tr>
-                      <th className="text-left p-3">Month</th>
-                      <th className="text-left p-3">Tokens Used</th>
-                      <th className="text-left p-3">Token Limit</th>
-                      <th className="text-left p-3">Usage %</th>
-                      <th className="text-left p-3">Cost</th>
-                      <th className="text-left p-3">Status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {usageHistory.map((usage, index) => (
-                      <tr key={index} className="border-b hover:bg-muted/30">
-                        <td className="p-3 font-medium text-foreground">{usage.month}</td>
-                        <td className="p-3 text-foreground">{usage.used.toLocaleString()}</td>
-                        <td className="p-3 text-foreground">{usage.limit.toLocaleString()}</td>
-                        <td className="p-3">
-                          <div className="flex items-center gap-2">
-                            <div className="w-16 bg-gray-200 rounded-full h-2">
-                              <div
-                                className="bg-blue-500 h-2 rounded-full"
-                                style={{ width: `${(usage.used / usage.limit) * 100}%` }}
-                              ></div>
-                            </div>
-                            <span className="text-sm text-foreground">
-                              {Math.round((usage.used / usage.limit) * 100)}%
-                            </span>
-                          </div>
-                        </td>
-                        <td className="p-3 font-semibold text-foreground">${usage.cost}</td>
-                        <td className="p-3">
-                          <Badge className="bg-green-100 text-green-800">Paid</Badge>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+              <Switch
+                checked={notifications.email}
+                onCheckedChange={(checked) => setNotifications((prev) => ({ ...prev, email: checked }))}
+              />
+            </div>
+            <div className="flex items-center justify-between">
+              <div className="space-y-1">
+                <Label className="text-sm font-medium">Push Notifications</Label>
+                <p className="text-sm text-muted-foreground">Browser push notifications</p>
               </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Invoices</CardTitle>
-              <CardDescription>Download your billing invoices</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                {["March 2024", "February 2024", "January 2024"].map((month, index) => (
-                  <div key={index} className="flex items-center justify-between p-3 border rounded-lg">
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 bg-blue-100 rounded flex items-center justify-center">
-                        <DollarSign className="w-4 h-4 text-blue-600" />
-                      </div>
-                      <div>
-                        <p className="font-medium text-foreground">Invoice - {month}</p>
-                        <p className="text-sm text-muted-foreground">Premium Plan</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span className="font-semibold text-foreground">$299.00</span>
-                      <Button size="sm" variant="outline" className="text-foreground bg-transparent">
-                        Download
-                      </Button>
-                    </div>
-                  </div>
-                ))}
+              <Switch
+                checked={notifications.push}
+                onCheckedChange={(checked) => setNotifications((prev) => ({ ...prev, push: checked }))}
+              />
+            </div>
+            <div className="flex items-center justify-between">
+              <div className="space-y-1">
+                <Label className="text-sm font-medium">SMS Notifications</Label>
+                <p className="text-sm text-muted-foreground">Critical alerts via SMS</p>
               </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-      </Tabs>
+              <Switch
+                checked={notifications.sms}
+                onCheckedChange={(checked) => setNotifications((prev) => ({ ...prev, sms: checked }))}
+              />
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Account Security */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Shield className="h-5 w-5" />
+              Account Security
+            </CardTitle>
+            <CardDescription>Manage your account security settings</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="grid md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="current-password">Current Password</Label>
+                <Input id="current-password" type="password" placeholder="Enter current password" />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="new-password">New Password</Label>
+                <Input id="new-password" type="password" placeholder="Enter new password" />
+              </div>
+            </div>
+            <Button>Update Password</Button>
+          </CardContent>
+        </Card>
+
+        {/* Save Changes */}
+        <div className="flex justify-end gap-4">
+          <Button variant="outline">Cancel</Button>
+          <Button>Save Changes</Button>
+        </div>
+      </div>
     </div>
   )
 }

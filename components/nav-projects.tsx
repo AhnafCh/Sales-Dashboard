@@ -1,6 +1,6 @@
 "use client"
 
-import { type LucideIcon, MoreHorizontal, Plus } from "lucide-react"
+import { Folder, Forward, MoreHorizontal, Trash2, type LucideIcon } from "lucide-react"
 
 import {
   DropdownMenu,
@@ -36,7 +36,7 @@ export function NavProjects({
       <SidebarMenu>
         {projects.map((item) => (
           <SidebarMenuItem key={item.name}>
-            <SidebarMenuButton asChild tooltip={item.name}>
+            <SidebarMenuButton asChild>
               <a href={item.url}>
                 <item.icon />
                 <span>{item.name}</span>
@@ -55,25 +55,22 @@ export function NavProjects({
                 align={isMobile ? "end" : "start"}
               >
                 <DropdownMenuItem>
-                  <span>View Agent</span>
+                  <Folder className="text-muted-foreground" />
+                  <span>View Agent Details</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
-                  <span>Configure</span>
+                  <Forward className="text-muted-foreground" />
+                  <span>Configure Agent</span>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>
-                  <span>Archive Agent</span>
+                  <Trash2 className="text-muted-foreground" />
+                  <span>Restart Agent</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </SidebarMenuItem>
         ))}
-        <SidebarMenuItem>
-          <SidebarMenuButton className="text-sidebar-foreground/70">
-            <Plus className="text-sidebar-foreground/70" />
-            <span>Add Agent</span>
-          </SidebarMenuButton>
-        </SidebarMenuItem>
       </SidebarMenu>
     </SidebarGroup>
   )

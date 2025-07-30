@@ -1,155 +1,196 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Input } from "@/components/ui/input"
-import {
-  MessageSquare,
-  Phone,
-  Search,
-  Filter,
-  AlertTriangle,
-  Volume2,
-  Languages,
-  Clock,
-  TrendingUp,
-  Users,
-  Headphones,
-  Globe,
-  Facebook,
-  Instagram,
-  Play,
-} from "lucide-react"
+import { Progress } from "@/components/ui/progress"
 import { SidebarTrigger } from "@/components/ui/sidebar"
+import {
+  Eye,
+  MessageSquare,
+  Users,
+  Clock,
+  AlertTriangle,
+  CheckCircle,
+  Phone,
+  Mail,
+  Globe,
+  Zap,
+  TrendingUp,
+  Activity,
+} from "lucide-react"
 
 export default function LiveMonitoring() {
-  const [activeFilter, setActiveFilter] = useState("all")
+  const [currentTime, setCurrentTime] = useState(new Date())
 
-  const [liveConversations] = useState([
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(new Date())
+    }, 1000)
+    return () => clearInterval(timer)
+  }, [])
+
+  const activeConversations = [
     {
-      id: 1,
-      customer: "John Smith",
-      channel: "phone",
-      agent: "Telco",
-      duration: "3:45",
-      status: "active",
-      language: "English",
-      sentiment: "neutral",
-      issue: "Billing inquiry",
-      transcript: "Customer is asking about their monthly charges...",
-    },
-    {
-      id: 2,
-      customer: "Maria Garcia",
-      channel: "facebook",
-      agent: "Support",
-      duration: "8:12",
-      status: "escalation-needed",
-      language: "Spanish",
-      sentiment: "frustrated",
-      issue: "Product defect",
-      transcript: "El producto llegó dañado y necesito una solución...",
-    },
-    {
-      id: 3,
-      customer: "David Chen",
-      channel: "website",
+      id: "conv-001",
+      customer: "Sarah Johnson",
       agent: "Sales",
-      duration: "1:23",
+      channel: "Web Chat",
+      duration: "00:03:45",
       status: "active",
-      language: "English",
-      sentiment: "positive",
-      issue: "Feature question",
-      transcript: "I love the new features! Can you tell me more about...",
+      priority: "high",
+      lastMessage: "I need help with pricing for the enterprise plan...",
+      sentiment: "neutral",
     },
     {
-      id: 4,
-      customer: "Sophie Laurent",
-      channel: "instagram",
+      id: "conv-002",
+      customer: "Mike Chen",
       agent: "Support",
-      duration: "12:34",
-      status: "knowledge-gap",
-      language: "French",
-      sentiment: "confused",
-      issue: "Technical support",
-      transcript: "Je ne comprends pas comment utiliser cette fonction...",
+      channel: "Email",
+      duration: "00:12:30",
+      status: "waiting",
+      priority: "medium",
+      lastMessage: "The integration is not working as expected...",
+      sentiment: "negative",
     },
-  ])
+    {
+      id: "conv-003",
+      customer: "Emma Davis",
+      agent: "Onboarding",
+      channel: "Phone",
+      duration: "00:07:22",
+      status: "active",
+      priority: "low",
+      lastMessage: "Thank you for the detailed explanation...",
+      sentiment: "positive",
+    },
+    {
+      id: "conv-004",
+      customer: "Alex Rodriguez",
+      agent: "Telco",
+      channel: "Web Chat",
+      duration: "00:01:15",
+      status: "escalated",
+      priority: "urgent",
+      lastMessage: "This is the third time I'm contacting about this issue...",
+      sentiment: "negative",
+    },
+    {
+      id: "conv-005",
+      customer: "Lisa Wang",
+      agent: "AirVoice",
+      channel: "Voice",
+      duration: "00:05:33",
+      status: "active",
+      priority: "medium",
+      lastMessage: "Voice transcription in progress...",
+      sentiment: "neutral",
+    },
+  ]
 
-  const [knowledgeGaps] = useState([
-    { id: 1, query: "International shipping policies", frequency: 8, channel: "Facebook", urgency: "high" },
-    { id: 2, query: "Product warranty terms", frequency: 5, channel: "Website", urgency: "medium" },
-    { id: 3, query: "Bulk order discounts", frequency: 12, channel: "Instagram", urgency: "high" },
-    { id: 4, query: "Account deletion process", frequency: 3, channel: "Phone", urgency: "low" },
-  ])
+  const systemMetrics = {
+    totalConversations: 1247,
+    activeAgents: 5,
+    avgResponseTime: "2.3s",
+    resolutionRate: 94.2,
+    customerSatisfaction: 4.7,
+    systemLoad: 67,
+  }
 
-  const getChannelIcon = (channel: string) => {
-    switch (channel) {
-      case "phone":
-        return <Phone className="h-4 w-4 text-emerald-400" />
-      case "facebook":
-        return <Facebook className="h-4 w-4 text-primary" />
-      case "website":
-        return <Globe className="h-4 w-4 text-muted-foreground" />
-      case "instagram":
-        return <Instagram className="h-4 w-4 text-pink-600" />
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case "active":
+        return "bg-emerald-500"
+      case "waiting":
+        return "bg-yellow-500"
+      case "escalated":
+        return "bg-red-500"
       default:
-        return <MessageSquare className="h-4 w-4 text-muted-foreground" />
+        return "bg-gray-500"
     }
   }
 
-  const getStatusBadge = (status: string) => {
+  const getStatusVariant = (status: string) => {
     switch (status) {
       case "active":
-        return <Badge className="bg-emerald-900/40 text-emerald-300">Active</Badge>
-      case "escalation-needed":
-        return <Badge variant="destructive">Escalation Needed</Badge>
-      case "knowledge-gap":
-        return <Badge className="bg-amber-900/40 text-amber-300">Knowledge Gap</Badge>
+        return "default"
+      case "waiting":
+        return "secondary"
+      case "escalated":
+        return "destructive"
       default:
-        return <Badge variant="secondary">{status}</Badge>
+        return "outline"
+    }
+  }
+
+  const getPriorityColor = (priority: string) => {
+    switch (priority) {
+      case "urgent":
+        return "text-red-500"
+      case "high":
+        return "text-orange-500"
+      case "medium":
+        return "text-yellow-500"
+      case "low":
+        return "text-green-500"
+      default:
+        return "text-gray-500"
     }
   }
 
   const getSentimentColor = (sentiment: string) => {
     switch (sentiment) {
       case "positive":
-        return "text-emerald-400"
+        return "text-emerald-500"
+      case "negative":
+        return "text-red-500"
       case "neutral":
-        return "text-muted-foreground"
-      case "frustrated":
-        return "text-red-400"
-      case "confused":
-        return "text-amber-400"
+        return "text-gray-500"
       default:
-        return "text-muted-foreground"
+        return "text-gray-500"
     }
   }
 
-  const filteredConversations =
-    activeFilter === "all" ? liveConversations : liveConversations.filter((conv) => conv.status === activeFilter)
+  const getChannelIcon = (channel: string) => {
+    switch (channel) {
+      case "Web Chat":
+        return MessageSquare
+      case "Email":
+        return Mail
+      case "Phone":
+        return Phone
+      case "Voice":
+        return Phone
+      default:
+        return Globe
+    }
+  }
 
   return (
     <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
       {/* Header */}
-      <div className="flex items-center gap-4 mb-6">
+      <div className="flex items-center gap-4 mb-8">
         <SidebarTrigger className="-ml-1" />
         <div>
-          <h1 className="text-3xl font-bold text-foreground">Live Monitoring Workspace</h1>
-          <p className="text-muted-foreground">Real-time AI performance monitoring and intervention</p>
+          <h1 className="text-3xl font-bold text-foreground flex items-center gap-2">
+            <Eye className="h-8 w-8" />
+            Live Monitoring Workspace
+          </h1>
+          <p className="text-muted-foreground">
+            Real-time monitoring of AI agents and customer interactions - {currentTime.toLocaleTimeString()}
+          </p>
         </div>
       </div>
 
-      {/* Quick Stats */}
-      <div className="grid md:grid-cols-4 gap-4 mb-6">
+      {/* System Overview */}
+      <div className="grid md:grid-cols-6 gap-4 mb-8">
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-muted-foreground">Active Conversations</p>
-                <p className="text-2xl font-bold">{liveConversations.length}</p>
+                <p className="text-sm text-muted-foreground">Total Conversations</p>
+                <p className="text-2xl font-bold">{systemMetrics.totalConversations}</p>
               </div>
               <MessageSquare className="h-8 w-8 text-primary" />
             </div>
@@ -160,12 +201,10 @@ export default function LiveMonitoring() {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-muted-foreground">Escalations Needed</p>
-                <p className="text-2xl font-bold text-red-400">
-                  {liveConversations.filter((c) => c.status === "escalation-needed").length}
-                </p>
+                <p className="text-sm text-muted-foreground">Active Agents</p>
+                <p className="text-2xl font-bold">{systemMetrics.activeAgents}</p>
               </div>
-              <AlertTriangle className="h-8 w-8 text-red-400" />
+              <Users className="h-8 w-8 text-emerald-500" />
             </div>
           </CardContent>
         </Card>
@@ -174,12 +213,10 @@ export default function LiveMonitoring() {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-muted-foreground">Knowledge Gaps</p>
-                <p className="text-2xl font-bold text-amber-400">
-                  {liveConversations.filter((c) => c.status === "knowledge-gap").length}
-                </p>
+                <p className="text-sm text-muted-foreground">Avg Response</p>
+                <p className="text-2xl font-bold">{systemMetrics.avgResponseTime}</p>
               </div>
-              <TrendingUp className="h-8 w-8 text-amber-400" />
+              <Clock className="h-8 w-8 text-blue-500" />
             </div>
           </CardContent>
         </Card>
@@ -188,213 +225,118 @@ export default function LiveMonitoring() {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-muted-foreground">Avg Response Time</p>
-                <p className="text-2xl font-bold">2.3s</p>
+                <p className="text-sm text-muted-foreground">Resolution Rate</p>
+                <p className="text-2xl font-bold">{systemMetrics.resolutionRate}%</p>
               </div>
-              <Clock className="h-8 w-8 text-emerald-400" />
+              <CheckCircle className="h-8 w-8 text-emerald-500" />
             </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-muted-foreground">Satisfaction</p>
+                <p className="text-2xl font-bold">{systemMetrics.customerSatisfaction}/5</p>
+              </div>
+              <TrendingUp className="h-8 w-8 text-yellow-500" />
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-muted-foreground">System Load</p>
+                <p className="text-2xl font-bold">{systemMetrics.systemLoad}%</p>
+              </div>
+              <Activity className="h-8 w-8 text-orange-500" />
+            </div>
+            <Progress value={systemMetrics.systemLoad} className="mt-2 h-1" />
           </CardContent>
         </Card>
       </div>
 
-      {/* Filters and Search */}
-      <Card className="mb-6">
-        <CardContent className="p-4">
-          <div className="flex items-center gap-4">
-            <div className="flex-1">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-                <Input placeholder="Search conversations, customers, or issues..." className="pl-10" />
-              </div>
-            </div>
-            <div className="flex items-center gap-2">
-              <Button
-                variant={activeFilter === "all" ? "default" : "outline"}
-                size="sm"
-                onClick={() => setActiveFilter("all")}
-              >
-                All ({liveConversations.length})
-              </Button>
-              <Button
-                variant={activeFilter === "escalation-needed" ? "default" : "outline"}
-                size="sm"
-                onClick={() => setActiveFilter("escalation-needed")}
-              >
-                Escalations ({liveConversations.filter((c) => c.status === "escalation-needed").length})
-              </Button>
-              <Button
-                variant={activeFilter === "knowledge-gap" ? "default" : "outline"}
-                size="sm"
-                onClick={() => setActiveFilter("knowledge-gap")}
-              >
-                Knowledge Gaps ({liveConversations.filter((c) => c.status === "knowledge-gap").length})
-              </Button>
-              <Button variant="outline" size="sm">
-                <Filter className="h-4 w-4 mr-2" />
-                More Filters
-              </Button>
-            </div>
+      {/* Active Conversations */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <MessageSquare className="h-5 w-5" />
+            Active Conversations
+          </CardTitle>
+          <CardDescription>Real-time view of ongoing customer interactions</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            {activeConversations.map((conversation) => {
+              const ChannelIcon = getChannelIcon(conversation.channel)
+              return (
+                <div key={conversation.id} className="border rounded-lg p-4 hover:bg-muted/50 transition-colors">
+                  <div className="flex items-start justify-between mb-3">
+                    <div className="flex items-center gap-3">
+                      <div className={`w-3 h-3 rounded-full ${getStatusColor(conversation.status)}`} />
+                      <div>
+                        <h4 className="font-semibold">{conversation.customer}</h4>
+                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                          <ChannelIcon className="h-4 w-4" />
+                          <span>{conversation.channel}</span>
+                          <span>•</span>
+                          <span>Agent: {conversation.agent}</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Badge variant={getStatusVariant(conversation.status)}>{conversation.status}</Badge>
+                      <span className={`text-sm font-medium ${getPriorityColor(conversation.priority)}`}>
+                        {conversation.priority.toUpperCase()}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <div className="flex-1">
+                      <p className="text-sm text-muted-foreground mb-1">Last message:</p>
+                      <p className="text-sm">{conversation.lastMessage}</p>
+                    </div>
+                    <div className="flex items-center gap-4 ml-4">
+                      <div className="text-center">
+                        <p className="text-xs text-muted-foreground">Duration</p>
+                        <p className="text-sm font-mono">{conversation.duration}</p>
+                      </div>
+                      <div className="text-center">
+                        <p className="text-xs text-muted-foreground">Sentiment</p>
+                        <p className={`text-sm font-medium ${getSentimentColor(conversation.sentiment)}`}>
+                          {conversation.sentiment}
+                        </p>
+                      </div>
+                      <Button size="sm" variant="outline">
+                        Take Over
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              )
+            })}
           </div>
         </CardContent>
       </Card>
 
-      <div className="grid lg:grid-cols-3 gap-6">
-        {/* Live Conversations */}
-        <div className="lg:col-span-2">
-          <Card>
-            <CardHeader>
-              <CardTitle>Live Conversations</CardTitle>
-              <CardDescription>Real-time monitoring of AI agent interactions</CardDescription>
-            </CardHeader>
-            <CardContent className="p-0">
-              <div className="space-y-0">
-                {filteredConversations.map((conversation) => (
-                  <div key={conversation.id} className="p-4 border-b hover:bg-muted/30 cursor-pointer">
-                    <div className="flex items-start justify-between mb-3">
-                      <div className="flex items-center gap-3">
-                        {getChannelIcon(conversation.channel)}
-                        <div>
-                          <h3 className="font-semibold">{conversation.customer}</h3>
-                          <p className="text-sm text-muted-foreground">{conversation.issue}</p>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        {getStatusBadge(conversation.status)}
-                        <Badge variant="outline" className="text-xs">
-                          {conversation.duration}
-                        </Badge>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center gap-4 mb-3 text-sm text-muted-foreground">
-                      <div className="flex items-center gap-1">
-                        <Headphones className="h-3 w-3" />
-                        <span>{conversation.agent}</span>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <Languages className="h-3 w-3" />
-                        <span>{conversation.language}</span>
-                      </div>
-                      <div className={`flex items-center gap-1 ${getSentimentColor(conversation.sentiment)}`}>
-                        <div className="w-2 h-2 rounded-full bg-current"></div>
-                        <span className="capitalize">{conversation.sentiment}</span>
-                      </div>
-                    </div>
-
-                    <div className="bg-muted/30 p-3 rounded-lg mb-3">
-                      <p className="text-sm">{conversation.transcript}</p>
-                      {conversation.language !== "English" && (
-                        <p className="text-xs text-muted-foreground mt-2 italic">
-                          Translation:{" "}
-                          {conversation.language === "Spanish"
-                            ? "The product arrived damaged and I need a solution..."
-                            : conversation.language === "French"
-                              ? "I don't understand how to use this feature..."
-                              : ""}
-                        </p>
-                      )}
-                    </div>
-
-                    <div className="flex items-center gap-2">
-                      {conversation.channel === "phone" && (
-                        <>
-                          <Button size="sm" variant="outline">
-                            <Play className="h-3 w-3 mr-1" />
-                            Listen
-                          </Button>
-                          <Button size="sm" variant="outline">
-                            <Volume2 className="h-3 w-3 mr-1" />
-                            Audio
-                          </Button>
-                        </>
-                      )}
-                      <Button size="sm" variant="outline">
-                        <Languages className="h-3 w-3 mr-1" />
-                        Translate
-                      </Button>
-                      {conversation.status === "escalation-needed" && (
-                        <Button size="sm" variant="destructive">
-                          <Users className="h-3 w-3 mr-1" />
-                          Take Over
-                        </Button>
-                      )}
-                      {conversation.status === "knowledge-gap" && (
-                        <Button size="sm" className="bg-yellow-600 hover:bg-yellow-700">
-                          <TrendingUp className="h-3 w-3 mr-1" />
-                          Add Knowledge
-                        </Button>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Knowledge Gap Alerts */}
-        <div className="lg:col-span-1">
-          <Card className="mb-6">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <AlertTriangle className="h-5 w-5 text-amber-400" />
-                Knowledge Gap Alerts
-              </CardTitle>
-              <CardDescription>Immediate attention required</CardDescription>
-            </CardHeader>
-            <CardContent className="p-0">
-              <div className="space-y-0">
-                {knowledgeGaps.map((gap) => (
-                  <div key={gap.id} className="p-4 border-b">
-                    <div className="flex items-start justify-between mb-2">
-                      <h4 className="font-medium text-sm">{gap.query}</h4>
-                      <Badge
-                        variant={
-                          gap.urgency === "high" ? "destructive" : gap.urgency === "medium" ? "secondary" : "outline"
-                        }
-                        className="text-xs"
-                      >
-                        {gap.urgency}
-                      </Badge>
-                    </div>
-                    <div className="flex items-center justify-between text-xs text-muted-foreground mb-3">
-                      <span>{gap.frequency} queries today</span>
-                      <span>{gap.channel}</span>
-                    </div>
-                    <Button size="sm" className="w-full">
-                      Add Knowledge
-                    </Button>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Quick Actions */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Quick Actions</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-2">
-              <Button className="w-full justify-start bg-transparent" variant="outline">
-                <MessageSquare className="h-4 w-4 mr-2" />
-                View All Conversations
-              </Button>
-              <Button className="w-full justify-start bg-transparent" variant="outline">
-                <TrendingUp className="h-4 w-4 mr-2" />
-                Performance Analytics
-              </Button>
-              <Button className="w-full justify-start bg-transparent" variant="outline">
-                <Users className="h-4 w-4 mr-2" />
-                Agent Management
-              </Button>
-              <Button className="w-full justify-start bg-transparent" variant="outline">
-                <AlertTriangle className="h-4 w-4 mr-2" />
-                System Alerts
-              </Button>
-            </CardContent>
-          </Card>
-        </div>
+      {/* Quick Actions */}
+      <div className="flex gap-4">
+        <Button className="flex items-center gap-2">
+          <AlertTriangle className="h-4 w-4" />
+          View Alerts
+        </Button>
+        <Button variant="outline" className="flex items-center gap-2 bg-transparent">
+          <Zap className="h-4 w-4" />
+          System Health
+        </Button>
+        <Button variant="outline" className="flex items-center gap-2 bg-transparent">
+          <Users className="h-4 w-4" />
+          Agent Performance
+        </Button>
       </div>
     </div>
   )

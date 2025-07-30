@@ -4,75 +4,202 @@ import { useState } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import { Switch } from "@/components/ui/switch"
 import { Progress } from "@/components/ui/progress"
-import { Label } from "@/components/ui/label"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Plus, Facebook, Twitter, Instagram, Globe, MessageSquare, Upload, AlertCircle, Settings } from "lucide-react"
 import { SidebarTrigger } from "@/components/ui/sidebar"
+import {
+  Settings,
+  MessageSquare,
+  Mail,
+  Phone,
+  Globe,
+  Facebook,
+  Plus,
+  Edit,
+  Trash2,
+  Upload,
+  Download,
+  RefreshCw,
+  CheckCircle,
+  AlertCircle,
+  Clock,
+} from "lucide-react"
 
 export default function ChannelManagement() {
-  const [connectedChannels] = useState([
-    { id: 1, name: "Facebook Page", type: "facebook", status: "connected", knowledge: "complete", conversations: 156 },
-    { id: 2, name: "Company Website", type: "website", status: "connected", knowledge: "pending", conversations: 89 },
+  const [channels, setChannels] = useState([
+    {
+      id: 1,
+      name: "Website Chat",
+      type: "Web Chat",
+      status: "active",
+      connected: true,
+      messages: 1247,
+      lastSync: "2 min ago",
+      icon: MessageSquare,
+      color: "text-blue-500",
+    },
+    {
+      id: 2,
+      name: "Support Email",
+      type: "Email",
+      status: "active",
+      connected: true,
+      messages: 892,
+      lastSync: "5 min ago",
+      icon: Mail,
+      color: "text-green-500",
+    },
     {
       id: 3,
-      name: "Instagram Business",
-      type: "instagram",
-      status: "connected",
-      knowledge: "complete",
-      conversations: 234,
+      name: "Phone Support",
+      type: "Voice",
+      status: "active",
+      connected: true,
+      messages: 456,
+      lastSync: "1 min ago",
+      icon: Phone,
+      color: "text-purple-500",
     },
-    { id: 4, name: "Twitter Support", type: "twitter", status: "pending", knowledge: "none", conversations: 0 },
+    {
+      id: 4,
+      name: "Facebook Messenger",
+      type: "Social",
+      status: "warning",
+      connected: true,
+      messages: 234,
+      lastSync: "15 min ago",
+      icon: Facebook,
+      color: "text-blue-600",
+    },
     {
       id: 5,
       name: "WhatsApp Business",
-      type: "whatsapp",
-      status: "connected",
-      knowledge: "updating",
-      conversations: 67,
+      type: "Messaging",
+      status: "inactive",
+      connected: false,
+      messages: 0,
+      lastSync: "Never",
+      icon: MessageSquare,
+      color: "text-green-600",
     },
   ])
 
-  const [knowledgeBase] = useState([
-    { id: 1, channel: "Facebook Page", documents: 12, status: "processed", lastUpdate: "2 hours ago" },
-    { id: 2, channel: "Company Website", documents: 8, status: "processing", lastUpdate: "30 min ago" },
-    { id: 3, channel: "Instagram Business", documents: 15, status: "processed", lastUpdate: "1 day ago" },
-    { id: 4, channel: "WhatsApp Business", documents: 6, status: "updating", lastUpdate: "5 min ago" },
-  ])
+  const knowledgeBases = [
+    {
+      id: 1,
+      name: "Product Documentation",
+      articles: 156,
+      lastUpdated: "2 hours ago",
+      status: "up-to-date",
+      coverage: 94,
+    },
+    {
+      id: 2,
+      name: "FAQ Database",
+      articles: 89,
+      lastUpdated: "1 day ago",
+      status: "needs-update",
+      coverage: 87,
+    },
+    {
+      id: 3,
+      name: "Troubleshooting Guide",
+      articles: 234,
+      lastUpdated: "3 hours ago",
+      status: "up-to-date",
+      coverage: 91,
+    },
+    {
+      id: 4,
+      name: "Policy & Procedures",
+      articles: 67,
+      lastUpdated: "1 week ago",
+      status: "outdated",
+      coverage: 76,
+    },
+  ]
 
-  const getChannelIcon = (type: string) => {
-    switch (type) {
-      case "facebook":
-        return <Facebook className="h-5 w-5 text-primary" />
-      case "twitter":
-        return <Twitter className="h-5 w-5 text-blue-400" />
-      case "instagram":
-        return <Instagram className="h-5 w-5 text-pink-400" />
-      case "website":
-        return <Globe className="h-5 w-5 text-muted-foreground" />
-      case "whatsapp":
-        return <MessageSquare className="h-5 w-5 text-emerald-400" />
+  const aiAgents = [
+    {
+      id: 1,
+      name: "Sales",
+      status: "active",
+      conversations: 24,
+      successRate: 94,
+      avgResponseTime: "1.2s",
+      knowledgeBase: "Product Documentation",
+    },
+    {
+      id: 2,
+      name: "Telco",
+      status: "active",
+      conversations: 18,
+      successRate: 91,
+      avgResponseTime: "1.8s",
+      knowledgeBase: "Troubleshooting Guide",
+    },
+    {
+      id: 3,
+      name: "Onboarding",
+      status: "active",
+      conversations: 12,
+      successRate: 96,
+      avgResponseTime: "1.1s",
+      knowledgeBase: "FAQ Database",
+    },
+    {
+      id: 4,
+      name: "AirVoice",
+      status: "warning",
+      conversations: 8,
+      successRate: 78,
+      avgResponseTime: "2.3s",
+      knowledgeBase: "Product Documentation",
+    },
+    {
+      id: 5,
+      name: "Support",
+      status: "active",
+      conversations: 31,
+      successRate: 89,
+      avgResponseTime: "1.5s",
+      knowledgeBase: "Policy & Procedures",
+    },
+  ]
+
+  const toggleChannelStatus = (channelId: number) => {
+    setChannels(
+      channels.map((channel) =>
+        channel.id === channelId
+          ? { ...channel, connected: !channel.connected, status: channel.connected ? "inactive" : "active" }
+          : channel,
+      ),
+    )
+  }
+
+  const getStatusIcon = (status: string) => {
+    switch (status) {
+      case "active":
+        return <CheckCircle className="h-4 w-4 text-emerald-500" />
+      case "warning":
+        return <AlertCircle className="h-4 w-4 text-yellow-500" />
+      case "inactive":
+        return <Clock className="h-4 w-4 text-gray-500" />
       default:
-        return <Globe className="h-5 w-5 text-muted-foreground" />
+        return <AlertCircle className="h-4 w-4 text-red-500" />
     }
   }
 
-  const getStatusBadge = (status: string) => {
+  const getKnowledgeBaseStatus = (status: string) => {
     switch (status) {
-      case "connected":
-        return <Badge className="bg-emerald-900/40 text-emerald-300">Connected</Badge>
-      case "pending":
-        return <Badge variant="secondary">Pending</Badge>
-      case "processing":
-        return <Badge className="bg-amber-900/40 text-amber-300">Processing</Badge>
-      case "updating":
-        return <Badge className="bg-blue-900/40 text-blue-300">Updating</Badge>
-      case "complete":
-        return <Badge className="bg-emerald-900/40 text-emerald-300">Complete</Badge>
-      case "none":
-        return <Badge variant="destructive">Not Set</Badge>
+      case "up-to-date":
+        return { variant: "default" as const, color: "text-emerald-500" }
+      case "needs-update":
+        return { variant: "secondary" as const, color: "text-yellow-500" }
+      case "outdated":
+        return { variant: "destructive" as const, color: "text-red-500" }
       default:
-        return <Badge variant="secondary">{status}</Badge>
+        return { variant: "outline" as const, color: "text-gray-500" }
     }
   }
 
@@ -82,192 +209,216 @@ export default function ChannelManagement() {
       <div className="flex items-center gap-4 mb-8">
         <SidebarTrigger className="-ml-1" />
         <div>
-          <h1 className="text-3xl font-bold text-foreground">Channel Management</h1>
-          <p className="text-muted-foreground">Connect platforms and manage knowledge bases</p>
+          <h1 className="text-3xl font-bold text-foreground flex items-center gap-2">
+            <Settings className="h-8 w-8" />
+            Channel Management
+          </h1>
+          <p className="text-muted-foreground">Connect platforms, manage knowledge bases, and configure AI agents</p>
         </div>
       </div>
 
-      {/* Remove the AI Agent Configuration tab since it's not needed */}
-      <Tabs defaultValue="connections" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="connections">Platform Connections</TabsTrigger>
-          <TabsTrigger value="knowledge">Knowledge Base</TabsTrigger>
-        </TabsList>
+      {/* Connected Channels */}
+      <Card className="mb-6">
+        <CardHeader>
+          <div className="flex items-center justify-between">
+            <div>
+              <CardTitle className="flex items-center gap-2">
+                <Globe className="h-5 w-5" />
+                Connected Channels
+              </CardTitle>
+              <CardDescription>Manage your communication channels and their status</CardDescription>
+            </div>
+            <Button>
+              <Plus className="h-4 w-4 mr-2" />
+              Add Channel
+            </Button>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {channels.map((channel) => {
+              const IconComponent = channel.icon
+              return (
+                <Card key={channel.id} className="relative">
+                  <CardContent className="p-4">
+                    <div className="flex items-start justify-between mb-3">
+                      <div className="flex items-center gap-3">
+                        <div className={`p-2 bg-muted rounded-lg ${channel.color}`}>
+                          <IconComponent className="h-5 w-5" />
+                        </div>
+                        <div>
+                          <h4 className="font-semibold">{channel.name}</h4>
+                          <p className="text-sm text-muted-foreground">{channel.type}</p>
+                        </div>
+                      </div>
+                      {getStatusIcon(channel.status)}
+                    </div>
 
-        <TabsContent value="connections" className="space-y-6">
-          {/* Available Integrations */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Available Integrations</CardTitle>
-              <CardDescription>Connect new platforms to expand your AI customer service reach</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid md:grid-cols-3 gap-4">
-                <Card className="cursor-pointer hover:shadow-md transition-shadow border-dashed border-2">
-                  <CardContent className="p-6 text-center">
-                    <Facebook className="h-8 w-8 text-primary mx-auto mb-3" />
-                    <h3 className="font-semibold mb-2">Facebook Pages</h3>
-                    <p className="text-sm text-muted-foreground mb-4">Connect your Facebook business pages</p>
-                    <Button size="sm" className="w-full">
-                      <Plus className="h-4 w-4 mr-2" />
-                      Connect
-                    </Button>
-                  </CardContent>
-                </Card>
-
-                <Card className="cursor-pointer hover:shadow-md transition-shadow border-dashed border-2">
-                  <CardContent className="p-6 text-center">
-                    <Globe className="h-8 w-8 text-muted-foreground mx-auto mb-3" />
-                    <h3 className="font-semibold mb-2">Website Chat</h3>
-                    <p className="text-sm text-muted-foreground mb-4">Embed AI chat on your website</p>
-                    <Button size="sm" className="w-full">
-                      <Plus className="h-4 w-4 mr-2" />
-                      Connect
-                    </Button>
-                  </CardContent>
-                </Card>
-
-                <Card className="cursor-pointer hover:shadow-md transition-shadow border-dashed border-2">
-                  <CardContent className="p-6 text-center">
-                    <MessageSquare className="h-8 w-8 text-emerald-400 mx-auto mb-3" />
-                    <h3 className="font-semibold mb-2">WhatsApp Business</h3>
-                    <p className="text-sm text-muted-foreground mb-4">Connect WhatsApp Business API</p>
-                    <Button size="sm" className="w-full">
-                      <Plus className="h-4 w-4 mr-2" />
-                      Connect
-                    </Button>
-                  </CardContent>
-                </Card>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Connected Channels */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Connected Channels</CardTitle>
-              <CardDescription>Manage your active platform connections</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {connectedChannels.map((channel) => (
-                  <div key={channel.id} className="flex items-center justify-between p-4 border rounded-lg">
-                    <div className="flex items-center gap-4">
-                      {getChannelIcon(channel.type)}
-                      <div>
-                        <h3 className="font-semibold">{channel.name}</h3>
-                        <p className="text-sm text-muted-foreground">{channel.conversations} conversations this week</p>
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-muted-foreground">Messages</span>
+                        <span className="font-medium">{channel.messages}</span>
+                      </div>
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-muted-foreground">Last Sync</span>
+                        <span className="font-medium">{channel.lastSync}</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm text-muted-foreground">Active</span>
+                        <Switch checked={channel.connected} onCheckedChange={() => toggleChannelStatus(channel.id)} />
                       </div>
                     </div>
-                    <div className="flex items-center gap-4">
-                      <div className="text-right">
-                        <div className="flex items-center gap-2 mb-1">
-                          <span className="text-sm text-muted-foreground">Status:</span>
-                          {getStatusBadge(channel.status)}
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <span className="text-sm text-muted-foreground">Knowledge:</span>
-                          {getStatusBadge(channel.knowledge)}
-                        </div>
-                      </div>
-                      <Button variant="outline" size="sm">
-                        <Settings className="h-4 w-4 mr-2" />
-                        Configure
+
+                    <div className="flex gap-2 mt-4">
+                      <Button size="sm" variant="outline" className="flex-1 bg-transparent">
+                        <Edit className="h-3 w-3 mr-1" />
+                        Edit
+                      </Button>
+                      <Button size="sm" variant="outline">
+                        <RefreshCw className="h-3 w-3" />
                       </Button>
                     </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
+                  </CardContent>
+                </Card>
+              )
+            })}
+          </div>
+        </CardContent>
+      </Card>
 
-        <TabsContent value="knowledge" className="space-y-6">
-          {/* Knowledge Base Upload */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Channel Knowledge Management</CardTitle>
-              <CardDescription>Upload and manage training documents for each connected platform</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid md:grid-cols-2 gap-6">
-                <div className="space-y-4">
-                  <Label htmlFor="channel-select">Select Channel</Label>
-                  <select className="w-full p-2 border rounded-md">
-                    <option>Facebook Page</option>
-                    <option>Company Website</option>
-                    <option>Instagram Business</option>
-                    <option>WhatsApp Business</option>
-                  </select>
-
-                  <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
-                    <Upload className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                    <h3 className="text-lg font-semibold mb-2">Upload Training Documents</h3>
-                    <p className="text-muted-foreground mb-4">Drag and drop files or click to browse</p>
-                    <Button>
-                      <Upload className="h-4 w-4 mr-2" />
-                      Choose Files
-                    </Button>
-                    <p className="text-xs text-gray-500 mt-2">Supports PDF, DOC, TXT files up to 10MB each</p>
-                  </div>
-                </div>
-
-                <div className="space-y-4">
-                  <h3 className="font-semibold">Processing Status</h3>
-                  {knowledgeBase.map((kb) => (
-                    <div key={kb.id} className="p-4 border rounded-lg">
-                      <div className="flex items-center justify-between mb-2">
-                        <h4 className="font-medium">{kb.channel}</h4>
-                        {getStatusBadge(kb.status)}
-                      </div>
-                      <div className="flex items-center justify-between text-sm text-muted-foreground">
-                        <span>{kb.documents} documents</span>
-                        <span>Updated {kb.lastUpdate}</span>
-                      </div>
-                      {kb.status === "processing" && <Progress value={65} className="mt-2" />}
+      {/* Knowledge Bases */}
+      <Card className="mb-6">
+        <CardHeader>
+          <div className="flex items-center justify-between">
+            <div>
+              <CardTitle className="flex items-center gap-2">
+                <Upload className="h-5 w-5" />
+                Knowledge Bases
+              </CardTitle>
+              <CardDescription>Manage AI training data and documentation</CardDescription>
+            </div>
+            <div className="flex gap-2">
+              <Button variant="outline">
+                <Download className="h-4 w-4 mr-2" />
+                Export
+              </Button>
+              <Button>
+                <Plus className="h-4 w-4 mr-2" />
+                Add Knowledge Base
+              </Button>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            {knowledgeBases.map((kb) => {
+              const statusConfig = getKnowledgeBaseStatus(kb.status)
+              return (
+                <div key={kb.id} className="border rounded-lg p-4">
+                  <div className="flex items-start justify-between mb-3">
+                    <div>
+                      <h4 className="font-semibold">{kb.name}</h4>
+                      <p className="text-sm text-muted-foreground">
+                        {kb.articles} articles • Last updated {kb.lastUpdated}
+                      </p>
                     </div>
-                  ))}
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Knowledge Gap Alerts */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Knowledge Gap Alerts</CardTitle>
-              <CardDescription>Areas where AI agents need additional training data</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                <div className="flex items-center gap-3 p-3 bg-muted/30 border border-yellow-200 rounded-lg">
-                  <AlertCircle className="h-5 w-5 text-yellow-600" />
-                  <div className="flex-1">
-                    <p className="font-medium">Product return policy questions</p>
-                    <p className="text-sm text-muted-foreground">
-                      Facebook Page - 12 unanswered queries in the last 24 hours
-                    </p>
+                    <Badge variant={statusConfig.variant}>{kb.status.replace("-", " ")}</Badge>
                   </div>
-                  <Button size="sm" variant="outline">
-                    Add Knowledge
-                  </Button>
-                </div>
 
-                <div className="flex items-center gap-3 p-3 bg-muted/30 border border-yellow-200 rounded-lg">
-                  <AlertCircle className="h-5 w-5 text-yellow-600" />
-                  <div className="flex-1">
-                    <p className="font-medium">Shipping information for international orders</p>
-                    <p className="text-sm text-muted-foreground">Website Chat - 8 escalations to human agents</p>
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-muted-foreground">Coverage</span>
+                      <span className="font-medium">{kb.coverage}%</span>
+                    </div>
+                    <Progress value={kb.coverage} className="h-2" />
                   </div>
-                  <Button size="sm" variant="outline">
-                    Add Knowledge
-                  </Button>
+
+                  <div className="flex gap-2 mt-4">
+                    <Button size="sm" variant="outline">
+                      <Edit className="h-3 w-3 mr-1" />
+                      Edit
+                    </Button>
+                    <Button size="sm" variant="outline">
+                      <Upload className="h-3 w-3 mr-1" />
+                      Update
+                    </Button>
+                    <Button size="sm" variant="outline">
+                      <RefreshCw className="h-3 w-3 mr-1" />
+                      Sync
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="ml-auto text-red-500 hover:text-red-600 bg-transparent"
+                    >
+                      <Trash2 className="h-3 w-3" />
+                    </Button>
+                  </div>
                 </div>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-      </Tabs>
+              )
+            })}
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* AI Agents Configuration */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Settings className="h-5 w-5" />
+            AI Agents Configuration
+          </CardTitle>
+          <CardDescription>Configure and monitor your AI agents performance</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {aiAgents.map((agent) => (
+              <Card key={agent.id} className="relative">
+                <CardContent className="p-4">
+                  <div className="flex items-start justify-between mb-3">
+                    <div>
+                      <h4 className="font-semibold">{agent.name}</h4>
+                      <p className="text-sm text-muted-foreground">AI Agent</p>
+                    </div>
+                    <Badge variant={agent.status === "active" ? "default" : "secondary"}>{agent.status}</Badge>
+                  </div>
+
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Active Conversations</span>
+                      <span className="font-medium">{agent.conversations}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Success Rate</span>
+                      <span className="font-medium">{agent.successRate}%</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Avg Response</span>
+                      <span className="font-medium">{agent.avgResponseTime}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Knowledge Base</span>
+                      <span className="font-medium text-xs">{agent.knowledgeBase}</span>
+                    </div>
+                  </div>
+
+                  <Progress value={agent.successRate} className="mt-3 h-2" />
+
+                  <div className="flex gap-2 mt-4">
+                    <Button size="sm" variant="outline" className="flex-1 bg-transparent">
+                      <Edit className="h-3 w-3 mr-1" />
+                      Configure
+                    </Button>
+                    <Button size="sm" variant="outline">
+                      <RefreshCw className="h-3 w-3" />
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
     </div>
   )
 }
