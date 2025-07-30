@@ -100,71 +100,7 @@ export default function Dashboard() {
         </Link>
       </div>
 
-      {/* AI Agents Overview - Central Hub */}
-      <Card className="mb-8">
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <div>
-              <CardTitle className="text-2xl">AI Agents Overview</CardTitle>
-              <CardDescription>Real-time status and performance monitoring</CardDescription>
-            </div>
-            <div className="flex gap-2">
-              <Link href="/live-monitoring">
-                <Button variant="outline" size="sm">
-                  <MessageSquare className="h-4 w-4 mr-2" />
-                  Live Monitoring
-                </Button>
-              </Link>
-              <Link href="/analytics">
-                <Button variant="outline" size="sm">
-                  <BarChart3 className="h-4 w-4 mr-2" />
-                  Analytics
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </CardHeader>
-        <CardContent>
-          <div className="grid md:grid-cols-5 gap-4">
-            {agentStats.map((agent) => (
-              <Card key={agent.id} className="relative">
-                <CardHeader className="pb-3">
-                  <div className="flex items-center justify-between">
-                    <CardTitle className="text-sm font-medium">{agent.name}</CardTitle>
-                    <Badge variant={agent.status === "active" ? "success" : "warning"} className="text-xs">
-                      {agent.status}
-                    </Badge>
-                  </div>
-                </CardHeader>
-                <CardContent className="pt-0">
-                  <div className="space-y-3">
-                    <div>
-                      <div className="flex justify-between text-xs text-muted-foreground mb-1">
-                        <span>Active Conversations</span>
-                        <span>{agent.conversations}</span>
-                      </div>
-                    </div>
-                    <div>
-                      <div className="flex justify-between text-xs text-muted-foreground mb-1">
-                        <span>Token Usage</span>
-                        <span>{agent.tokens}%</span>
-                      </div>
-                      <Progress value={agent.tokens} className="h-2 bg-muted" />
-                    </div>
-                    <div>
-                      <div className="flex justify-between text-xs text-muted-foreground mb-1">
-                        <span>Performance</span>
-                        <span>{agent.performance}%</span>
-                      </div>
-                      <Progress value={agent.performance} className="h-2 bg-muted" />
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+      
 
       {/* Quick Stats Grid */}
       <div className="grid md:grid-cols-4 gap-6 mb-8">
