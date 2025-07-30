@@ -4,584 +4,324 @@ import { useState } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import {
-  Search,
-  Filter,
-  Download,
-  Clock,
-  Bell,
-  Settings,
-  MessageSquare,
-  Users,
-  FileText,
-  Send,
-  Plus,
-  Trash2,
-} from "lucide-react"
 import { SidebarTrigger } from "@/components/ui/sidebar"
+import { Zap, Settings, RefreshCw, Play, Pause, AlertTriangle, CheckCircle, Clock, Send, Bot } from "lucide-react"
 
 export default function QuickOperations() {
-  const [activeFilters, setActiveFilters] = useState({
-    channel: "all",
-    status: "all",
-    priority: "all",
-    dateRange: "7d",
-  })
+  const [broadcastMessage, setBroadcastMessage] = useState("")
+  const [selectedAgents, setSelectedAgents] = useState<string[]>([])
 
-  const [reminders] = useState([
-    { id: 1, title: "Follow up with Sarah Johnson", due: "2024-01-15 10:00", priority: "high", type: "customer" },
+  const quickActions = [
     {
-      id: 2,
-      title: "Update knowledge base - shipping policies",
-      due: "2024-01-15 14:00",
-      priority: "medium",
-      type: "system",
+      title: "Restart All Agents",
+      description: "Restart all AI agents to apply updates",
+      icon: RefreshCw,
+      action: "restart",
+      status: "ready",
     },
-    { id: 3, title: "Review AI agent performance metrics", due: "2024-01-16 09:00", priority: "low", type: "review" },
-  ])
+    {
+      title: "Enable Maintenance Mode",
+      description: "Put system in maintenance mode",
+      icon: Settings,
+      action: "maintenance",
+      status: "ready",
+    },
+    {
+      title: "Emergency Broadcast",
+      description: "Send urgent message to all customers",
+      icon: AlertTriangle,
+      action: "broadcast",
+      status: "ready",
+    },
+    {
+      title: "Scale Up Resources",
+      description: "Increase system capacity for high traffic",
+      icon: Zap,
+      action: "scale",
+      status: "ready",
+    },
+  ]
 
-  const [conversations] = useState([
+  const agents = [
+    { id: "sales", name: "Sales AI", status: "active", load: 78 },
+    { id: "support", name: "Support AI", status: "active", load: 92 },
+    { id: "telco", name: "Telco AI", status: "active", load: 65 },
+    { id: "onboarding", name: "Onboarding AI", status: "active", load: 45 },
+    { id: "airvoice", name: "AirVoice AI", status: "warning", load: 98 },
+  ]
+
+  const recentOperations = [
     {
       id: 1,
-      customer: "John Doe",
-      channel: "facebook",
-      status: "resolved",
-      priority: "medium",
-      date: "2024-01-14",
-      issue: "Product inquiry",
+      action: "Agent Restart",
+      target: "Support AI",
+      timestamp: "2 minutes ago",
+      status: "completed",
+      user: "Admin",
     },
     {
       id: 2,
-      customer: "Jane Smith",
-      channel: "website",
-      status: "active",
-      priority: "high",
-      date: "2024-01-14",
-      issue: "Technical support",
+      action: "Broadcast Message",
+      target: "All Customers",
+      timestamp: "15 minutes ago",
+      status: "completed",
+      user: "Manager",
     },
     {
       id: 3,
-      customer: "Mike Johnson",
-      channel: "phone",
-      status: "escalated",
-      priority: "urgent",
-      date: "2024-01-14",
-      issue: "Billing dispute",
+      action: "Scale Resources",
+      target: "System Wide",
+      timestamp: "1 hour ago",
+      status: "completed",
+      user: "Admin",
     },
     {
       id: 4,
-      customer: "Sarah Wilson",
-      channel: "instagram",
-      status: "resolved",
-      priority: "low",
-      date: "2024-01-13",
-      issue: "General inquiry",
+      action: "Maintenance Mode",
+      target: "Channel Management",
+      timestamp: "3 hours ago",
+      status: "completed",
+      user: "Tech Lead",
     },
-  ])
-
-  const filteredConversations = conversations.filter((conv) => {
-    if (activeFilters.channel !== "all" && conv.channel !== activeFilters.channel) return false
-    if (activeFilters.status !== "all" && conv.status !== activeFilters.status) return false
-    if (activeFilters.priority !== "all" && conv.priority !== activeFilters.priority) return false
-    return true
-  })
+  ]
 
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "active":
-        return <Badge className="bg-blue-900/40 text-blue-300">Active</Badge>
-      case "resolved":
-        return <Badge className="bg-emerald-900/40 text-emerald-300">Resolved</Badge>
-      case "escalated":
-        return <Badge variant="destructive">Escalated</Badge>
+        return <Badge className="bg-emerald-500 hover:bg-emerald-600">Active</Badge>
+      case "warning":
+        return <Badge className="bg-yellow-500 hover:bg-yellow-600">Warning</Badge>
+      case "completed":
+        return <Badge className="bg-blue-500 hover:bg-blue-600">Completed</Badge>
       default:
-        return <Badge variant="secondary">{status}</Badge>
+        return <Badge variant="outline">{status}</Badge>
     }
   }
 
-  const getPriorityBadge = (priority: string) => {
-    switch (priority) {
-      case "urgent":
-        return <Badge variant="destructive">Urgent</Badge>
-      case "high":
-        return <Badge className="bg-orange-900/40 text-orange-300">High</Badge>
-      case "medium":
-        return <Badge variant="secondary">Medium</Badge>
-      case "low":
-        return <Badge variant="outline">Low</Badge>
-      default:
-        return <Badge variant="outline">{priority}</Badge>
-    }
+  const getLoadColor = (load: number) => {
+    if (load >= 90) return "text-red-500"
+    if (load >= 70) return "text-yellow-500"
+    return "text-emerald-500"
+  }
+
+  const toggleAgentSelection = (agentId: string) => {
+    setSelectedAgents((prev) => (prev.includes(agentId) ? prev.filter((id) => id !== agentId) : [...prev, agentId]))
   }
 
   return (
     <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
       {/* Header */}
-      <div className="flex items-center gap-4 mb-6">
+      <div className="flex items-center gap-4 mb-8">
         <SidebarTrigger className="-ml-1" />
         <div>
-          <h1 className="text-3xl font-bold text-foreground">Quick Operations</h1>
-          <p className="text-muted-foreground">Filters, exports, reminders, and bulk operations</p>
+          <h1 className="text-3xl font-bold text-foreground flex items-center gap-2">
+            <Zap className="h-8 w-8" />
+            Quick Operations
+          </h1>
+          <p className="text-muted-foreground">Perform system-wide operations and emergency actions</p>
         </div>
       </div>
 
-      <Tabs defaultValue="filters" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="filters">Advanced Filters</TabsTrigger>
-          <TabsTrigger value="exports">Export Center</TabsTrigger>
-          <TabsTrigger value="reminders">Reminders</TabsTrigger>
-          <TabsTrigger value="bulk">Bulk Operations</TabsTrigger>
-        </TabsList>
+      {/* System Status */}
+      <div className="grid md:grid-cols-4 gap-6 mb-8">
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">System Status</CardTitle>
+            <CheckCircle className="h-4 w-4 text-emerald-500" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-emerald-500">Operational</div>
+            <p className="text-xs text-muted-foreground">All systems running normally</p>
+          </CardContent>
+        </Card>
 
-        <TabsContent value="filters" className="space-y-6">
-          {/* Filter Controls */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Advanced Conversation Filters</CardTitle>
-              <CardDescription>Filter conversations across all channels and time periods</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid md:grid-cols-4 gap-4 mb-6">
-                <div>
-                  <Label>Channel</Label>
-                  <Select
-                    value={activeFilters.channel}
-                    onValueChange={(value) => setActiveFilters({ ...activeFilters, channel: value })}
-                  >
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">All Channels</SelectItem>
-                      <SelectItem value="facebook">Facebook</SelectItem>
-                      <SelectItem value="website">Website</SelectItem>
-                      <SelectItem value="phone">Phone</SelectItem>
-                      <SelectItem value="instagram">Instagram</SelectItem>
-                      <SelectItem value="whatsapp">WhatsApp</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Active Agents</CardTitle>
+            <Bot className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">5</div>
+            <p className="text-xs text-muted-foreground">1 needs attention</p>
+          </CardContent>
+        </Card>
 
-                <div>
-                  <Label>Status</Label>
-                  <Select
-                    value={activeFilters.status}
-                    onValueChange={(value) => setActiveFilters({ ...activeFilters, status: value })}
-                  >
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">All Status</SelectItem>
-                      <SelectItem value="active">Active</SelectItem>
-                      <SelectItem value="resolved">Resolved</SelectItem>
-                      <SelectItem value="escalated">Escalated</SelectItem>
-                      <SelectItem value="pending">Pending</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">System Load</CardTitle>
+            <Zap className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">76%</div>
+            <p className="text-xs text-muted-foreground">Within normal range</p>
+          </CardContent>
+        </Card>
 
-                <div>
-                  <Label>Priority</Label>
-                  <Select
-                    value={activeFilters.priority}
-                    onValueChange={(value) => setActiveFilters({ ...activeFilters, priority: value })}
-                  >
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">All Priorities</SelectItem>
-                      <SelectItem value="urgent">Urgent</SelectItem>
-                      <SelectItem value="high">High</SelectItem>
-                      <SelectItem value="medium">Medium</SelectItem>
-                      <SelectItem value="low">Low</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Uptime</CardTitle>
+            <Clock className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">99.9%</div>
+            <p className="text-xs text-muted-foreground">Last 30 days</p>
+          </CardContent>
+        </Card>
+      </div>
 
-                <div>
-                  <Label>Date Range</Label>
-                  <Select
-                    value={activeFilters.dateRange}
-                    onValueChange={(value) => setActiveFilters({ ...activeFilters, dateRange: value })}
-                  >
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="24h">Last 24 hours</SelectItem>
-                      <SelectItem value="7d">Last 7 days</SelectItem>
-                      <SelectItem value="30d">Last 30 days</SelectItem>
-                      <SelectItem value="90d">Last 90 days</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-4 mb-4">
-                <div className="flex-1">
-                  <div className="relative">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                    <Input placeholder="Search by customer name, issue, or keywords..." className="pl-10" />
-                  </div>
-                </div>
-                <Button>
-                  <Filter className="h-4 w-4 mr-2" />
-                  Apply Filters
-                </Button>
-                <Button variant="outline">Clear All</Button>
-              </div>
-
-              <div className="text-sm text-muted-foreground mb-4">
-                Showing {filteredConversations.length} of {conversations.length} conversations
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Filtered Results */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Filtered Conversations</CardTitle>
-            </CardHeader>
-            <CardContent className="p-0">
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead className="border-b">
-                    <tr>
-                      <th className="text-left p-3">Customer</th>
-                      <th className="text-left p-3">Channel</th>
-                      <th className="text-left p-3">Issue</th>
-                      <th className="text-left p-3">Status</th>
-                      <th className="text-left p-3">Priority</th>
-                      <th className="text-left p-3">Date</th>
-                      <th className="text-left p-3">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {filteredConversations.map((conversation) => (
-                      <tr key={conversation.id} className="border-b hover:bg-muted/30">
-                        <td className="p-3 font-medium">{conversation.customer}</td>
-                        <td className="p-3 capitalize">{conversation.channel}</td>
-                        <td className="p-3">{conversation.issue}</td>
-                        <td className="p-3">{getStatusBadge(conversation.status)}</td>
-                        <td className="p-3">{getPriorityBadge(conversation.priority)}</td>
-                        <td className="p-3">{conversation.date}</td>
-                        <td className="p-3">
-                          <Button size="sm" variant="outline">
-                            View
-                          </Button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="exports" className="space-y-6">
-          <div className="grid lg:grid-cols-2 gap-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Export Conversations</CardTitle>
-                <CardDescription>Download conversation data and transcripts</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div>
-                  <Label>Export Format</Label>
-                  <Select defaultValue="csv">
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="csv">CSV (Spreadsheet)</SelectItem>
-                      <SelectItem value="excel">Excel Workbook</SelectItem>
-                      <SelectItem value="pdf">PDF Report</SelectItem>
-                      <SelectItem value="json">JSON Data</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div>
-                  <Label>Date Range</Label>
-                  <Select defaultValue="7d">
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="24h">Last 24 hours</SelectItem>
-                      <SelectItem value="7d">Last 7 days</SelectItem>
-                      <SelectItem value="30d">Last 30 days</SelectItem>
-                      <SelectItem value="custom">Custom Range</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div>
-                  <Label>Include Data</Label>
-                  <div className="space-y-2 mt-2">
-                    <div className="flex items-center space-x-2">
-                      <input type="checkbox" id="transcripts" defaultChecked />
-                      <Label htmlFor="transcripts">Full Transcripts</Label>
+      {/* Quick Actions */}
+      <Card className="mb-8">
+        <CardHeader>
+          <CardTitle className="text-2xl">Quick Actions</CardTitle>
+          <CardDescription>Perform common system operations with one click</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {quickActions.map((action, index) => (
+              <Card key={index} className="hover:shadow-md transition-shadow cursor-pointer">
+                <CardContent className="p-4">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                      <action.icon className="h-5 w-5 text-primary" />
                     </div>
-                    <div className="flex items-center space-x-2">
-                      <input type="checkbox" id="metadata" defaultChecked />
-                      <Label htmlFor="metadata">Conversation Metadata</Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <input type="checkbox" id="analytics" />
-                      <Label htmlFor="analytics">Performance Analytics</Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <input type="checkbox" id="satisfaction" />
-                      <Label htmlFor="satisfaction">Satisfaction Scores</Label>
+                    <div className="flex-1">
+                      <h4 className="font-medium text-sm">{action.title}</h4>
                     </div>
                   </div>
-                </div>
-
-                <Button className="w-full">
-                  <Download className="h-4 w-4 mr-2" />
-                  Export Conversations
-                </Button>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Export Analytics</CardTitle>
-                <CardDescription>Download performance reports and insights</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-3">
-                  <Button className="w-full justify-start bg-transparent" variant="outline">
-                    <Download className="h-4 w-4 mr-2" />
-                    Channel Performance Report
+                  <p className="text-xs text-muted-foreground mb-3">{action.description}</p>
+                  <Button size="sm" className="w-full">
+                    Execute
                   </Button>
-                  <Button className="w-full justify-start bg-transparent" variant="outline">
-                    <Download className="h-4 w-4 mr-2" />
-                    AI Agent Metrics
-                  </Button>
-                  <Button className="w-full justify-start bg-transparent" variant="outline">
-                    <Download className="h-4 w-4 mr-2" />
-                    Customer Satisfaction Survey
-                  </Button>
-                  <Button className="w-full justify-start bg-transparent" variant="outline">
-                    <Download className="h-4 w-4 mr-2" />
-                    Knowledge Gap Analysis
-                  </Button>
-                  <Button className="w-full justify-start bg-transparent" variant="outline">
-                    <Download className="h-4 w-4 mr-2" />
-                    Peak Hours Analysis
-                  </Button>
-                </div>
-
-                <div className="pt-4 border-t">
-                  <h4 className="font-medium mb-3">Scheduled Exports</h4>
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between p-2 bg-muted/30 rounded">
-                      <span className="text-sm">Weekly Performance Report</span>
-                      <Badge variant="outline">Active</Badge>
-                    </div>
-                    <div className="flex items-center justify-between p-2 bg-muted/30 rounded">
-                      <span className="text-sm">Monthly Analytics Summary</span>
-                      <Badge variant="outline">Active</Badge>
-                    </div>
-                  </div>
-                  <Button size="sm" className="w-full mt-3 bg-transparent" variant="outline">
-                    <Plus className="h-4 w-4 mr-2" />
-                    Schedule New Export
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            ))}
           </div>
-        </TabsContent>
+        </CardContent>
+      </Card>
 
-        <TabsContent value="reminders" className="space-y-6">
-          <div className="grid lg:grid-cols-2 gap-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Active Reminders</CardTitle>
-                <CardDescription>Manage your scheduled tasks and follow-ups</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {reminders.map((reminder) => (
-                    <div key={reminder.id} className="flex items-start gap-3 p-3 border rounded-lg">
-                      <Bell className="h-5 w-5 text-primary mt-0.5" />
-                      <div className="flex-1">
-                        <h4 className="font-medium">{reminder.title}</h4>
-                        <div className="flex items-center gap-2 mt-1 text-sm text-muted-foreground">
-                          <Clock className="h-3 w-3" />
-                          <span>{reminder.due}</span>
-                          {getPriorityBadge(reminder.priority)}
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <Button size="sm" variant="outline">
-                          Edit
-                        </Button>
-                        <Button size="sm" variant="ghost">
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </div>
+      {/* Agent Management */}
+      <div className="grid lg:grid-cols-2 gap-6 mb-8">
+        <Card>
+          <CardHeader>
+            <CardTitle>Agent Management</CardTitle>
+            <CardDescription>Monitor and control individual AI agents</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              {agents.map((agent) => (
+                <div key={agent.id} className="flex items-center justify-between p-3 border rounded-lg">
+                  <div className="flex items-center gap-3">
+                    <input
+                      type="checkbox"
+                      checked={selectedAgents.includes(agent.id)}
+                      onChange={() => toggleAgentSelection(agent.id)}
+                      className="rounded"
+                    />
+                    <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
+                      <Bot className="h-4 w-4 text-primary" />
                     </div>
-                  ))}
+                    <div>
+                      <p className="font-medium text-sm">{agent.name}</p>
+                      <p className="text-xs text-muted-foreground">Load: {agent.load}%</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className={`text-sm font-medium ${getLoadColor(agent.load)}`}>{agent.load}%</span>
+                    {getStatusBadge(agent.status)}
+                  </div>
                 </div>
-              </CardContent>
-            </Card>
+              ))}
+              <div className="flex gap-2 pt-2">
+                <Button size="sm" disabled={selectedAgents.length === 0}>
+                  <Play className="h-4 w-4 mr-2" />
+                  Start
+                </Button>
+                <Button size="sm" variant="outline" disabled={selectedAgents.length === 0}>
+                  <Pause className="h-4 w-4 mr-2" />
+                  Pause
+                </Button>
+                <Button size="sm" variant="outline" disabled={selectedAgents.length === 0}>
+                  <RefreshCw className="h-4 w-4 mr-2" />
+                  Restart
+                </Button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
 
-            <Card>
-              <CardHeader>
-                <CardTitle>Create New Reminder</CardTitle>
-                <CardDescription>Set up follow-ups and task reminders</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div>
-                  <Label>Reminder Title</Label>
-                  <Input placeholder="Enter reminder title..." />
-                </div>
+        <Card>
+          <CardHeader>
+            <CardTitle>Broadcast Message</CardTitle>
+            <CardDescription>Send a message to all active customers</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="message-type">Message Type</Label>
+                <select className="w-full p-2 border rounded-md bg-background">
+                  <option>Information</option>
+                  <option>Warning</option>
+                  <option>Emergency</option>
+                  <option>Maintenance</option>
+                </select>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="broadcast-message">Message Content</Label>
+                <Textarea
+                  id="broadcast-message"
+                  placeholder="Enter your message here..."
+                  value={broadcastMessage}
+                  onChange={(e) => setBroadcastMessage(e.target.value)}
+                  className="min-h-[100px]"
+                />
+              </div>
+              <div className="flex items-center gap-2">
+                <input type="checkbox" id="all-channels" className="rounded" />
+                <Label htmlFor="all-channels" className="text-sm">
+                  Send to all channels
+                </Label>
+              </div>
+              <Button className="w-full" disabled={!broadcastMessage.trim()}>
+                <Send className="h-4 w-4 mr-2" />
+                Send Broadcast
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
 
-                <div>
-                  <Label>Description</Label>
-                  <Textarea placeholder="Add details about this reminder..." />
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label>Due Date</Label>
-                    <Input type="date" />
+      {/* Recent Operations */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-2xl">Recent Operations</CardTitle>
+          <CardDescription>History of system operations and changes</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-3">
+            {recentOperations.map((operation) => (
+              <div key={operation.id} className="flex items-center justify-between p-3 border rounded-lg">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
+                    <Zap className="h-4 w-4 text-primary" />
                   </div>
                   <div>
-                    <Label>Due Time</Label>
-                    <Input type="time" />
+                    <p className="font-medium text-sm">{operation.action}</p>
+                    <p className="text-xs text-muted-foreground">
+                      Target: {operation.target} • By: {operation.user}
+                    </p>
                   </div>
                 </div>
-
-                <div>
-                  <Label>Priority</Label>
-                  <Select defaultValue="medium">
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="low">Low</SelectItem>
-                      <SelectItem value="medium">Medium</SelectItem>
-                      <SelectItem value="high">High</SelectItem>
-                      <SelectItem value="urgent">Urgent</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div>
-                  <Label>Reminder Type</Label>
-                  <Select defaultValue="general">
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="customer">Customer Follow-up</SelectItem>
-                      <SelectItem value="system">System Task</SelectItem>
-                      <SelectItem value="review">Performance Review</SelectItem>
-                      <SelectItem value="general">General Reminder</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <Button className="w-full">
-                  <Plus className="h-4 w-4 mr-2" />
-                  Create Reminder
-                </Button>
-              </CardContent>
-            </Card>
-          </div>
-        </TabsContent>
-
-        <TabsContent value="bulk" className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Bulk Operations</CardTitle>
-              <CardDescription>Perform actions on multiple conversations at once</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-6">
-                <div>
-                  <h4 className="font-medium mb-3">Select Conversations</h4>
-                  <div className="space-y-2 max-h-64 overflow-y-auto border rounded-lg p-3">
-                    {conversations.map((conversation) => (
-                      <div key={conversation.id} className="flex items-center space-x-3">
-                        <input type="checkbox" id={`conv-${conversation.id}`} />
-                        <Label htmlFor={`conv-${conversation.id}`} className="flex-1 cursor-pointer">
-                          <div className="flex items-center justify-between">
-                            <span>
-                              {conversation.customer} - {conversation.issue}
-                            </span>
-                            <div className="flex items-center gap-2">
-                              {getStatusBadge(conversation.status)}
-                              <span className="text-sm text-muted-foreground">{conversation.date}</span>
-                            </div>
-                          </div>
-                        </Label>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                <div>
-                  <h4 className="font-medium mb-3">Bulk Actions</h4>
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <div className="space-y-3">
-                      <Button className="w-full justify-start bg-transparent" variant="outline">
-                        <MessageSquare className="h-4 w-4 mr-2" />
-                        Mark as Resolved
-                      </Button>
-                      <Button className="w-full justify-start bg-transparent" variant="outline">
-                        <Users className="h-4 w-4 mr-2" />
-                        Assign to Agent
-                      </Button>
-                      <Button className="w-full justify-start bg-transparent" variant="outline">
-                        <Settings className="h-4 w-4 mr-2" />
-                        Change Priority
-                      </Button>
-                    </div>
-                    <div className="space-y-3">
-                      <Button className="w-full justify-start bg-transparent" variant="outline">
-                        <FileText className="h-4 w-4 mr-2" />
-                        Export Selected
-                      </Button>
-                      <Button className="w-full justify-start bg-transparent" variant="outline">
-                        <Send className="h-4 w-4 mr-2" />
-                        Send Follow-up
-                      </Button>
-                      <Button className="w-full justify-start bg-transparent" variant="outline">
-                        <Bell className="h-4 w-4 mr-2" />
-                        Set Reminders
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="pt-4 border-t">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-muted-foreground">0 conversations selected</span>
-                    <div className="flex gap-2">
-                      <Button variant="outline">Select All</Button>
-                      <Button disabled>Apply Actions</Button>
-                    </div>
-                  </div>
+                <div className="flex items-center gap-3">
+                  <span className="text-xs text-muted-foreground">{operation.timestamp}</span>
+                  {getStatusBadge(operation.status)}
                 </div>
               </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-      </Tabs>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
     </div>
   )
 }
