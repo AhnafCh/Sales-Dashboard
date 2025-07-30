@@ -5,296 +5,386 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
-import { SidebarTrigger } from "@/components/ui/sidebar"
-import {
-  ShoppingBag,
-  Star,
-  Search,
-  TrendingUp,
-  Users,
-  MessageSquare,
-  Zap,
-  Globe,
-  Headphones,
-  Bot,
-  BarChart3,
-} from "lucide-react"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Search, Star, TrendingUp, ShoppingCart, Eye, Heart, Share2, Package, DollarSign, Users } from "lucide-react"
 
-export default function BestSelling() {
+export default function BestSellingProducts() {
   const [searchTerm, setSearchTerm] = useState("")
+  const [selectedCategory, setSelectedCategory] = useState("all")
 
-  const products = [
+  const [bestSellers] = useState([
     {
       id: 1,
       name: "Premium AI Chat Widget",
-      description: "Advanced conversational AI widget with natural language processing",
+      category: "Widgets",
       price: 299,
-      originalPrice: 399,
       sales: 1247,
       rating: 4.8,
       reviews: 324,
-      category: "Chat Solutions",
-      icon: MessageSquare,
-      features: ["Real-time responses", "Multi-language support", "Custom branding"],
-      discount: 25,
+      image: "/placeholder.svg?height=200&width=200",
+      description: "Advanced AI-powered chat widget with customizable themes and real-time analytics.",
+      trending: true,
+      featured: true,
     },
     {
       id: 2,
       name: "Voice Assistant Integration",
-      description: "Seamless voice-to-text and text-to-voice AI assistant",
+      category: "Integrations",
       price: 499,
-      originalPrice: 599,
       sales: 892,
       rating: 4.9,
       reviews: 156,
-      category: "Voice Solutions",
-      icon: Headphones,
-      features: ["Voice recognition", "Natural speech", "Call routing"],
-      discount: 17,
+      image: "/placeholder.svg?height=200&width=200",
+      description: "Seamless voice assistant integration for hands-free customer support.",
+      trending: true,
+      featured: false,
     },
     {
       id: 3,
       name: "Multi-Language Support Pack",
-      description: "Support for 50+ languages with cultural context awareness",
+      category: "Add-ons",
       price: 199,
-      originalPrice: 249,
       sales: 2156,
       rating: 4.7,
-      reviews: 543,
-      category: "Language Tools",
-      icon: Globe,
-      features: ["50+ languages", "Cultural context", "Auto-translation"],
-      discount: 20,
+      reviews: 445,
+      image: "/placeholder.svg?height=200&width=200",
+      description: "Support for 50+ languages with automatic translation capabilities.",
+      trending: false,
+      featured: true,
     },
     {
       id: 4,
       name: "Advanced Analytics Dashboard",
-      description: "Comprehensive analytics and reporting for customer interactions",
-      price: 399,
-      originalPrice: 499,
-      sales: 678,
-      rating: 4.6,
-      reviews: 234,
       category: "Analytics",
-      icon: BarChart3,
-      features: ["Real-time metrics", "Custom reports", "Data export"],
-      discount: 20,
+      price: 399,
+      sales: 756,
+      rating: 4.6,
+      reviews: 189,
+      image: "/placeholder.svg?height=200&width=200",
+      description: "Comprehensive analytics with custom reports and data visualization.",
+      trending: false,
+      featured: false,
     },
     {
       id: 5,
-      name: "Smart Bot Builder",
-      description: "Drag-and-drop bot creation with advanced AI capabilities",
+      name: "CRM Integration Suite",
+      category: "Integrations",
       price: 599,
-      originalPrice: 799,
-      sales: 445,
+      sales: 634,
       rating: 4.8,
-      reviews: 189,
-      category: "Bot Solutions",
-      icon: Bot,
-      features: ["Visual builder", "AI training", "Integration APIs"],
-      discount: 25,
+      reviews: 98,
+      image: "/placeholder.svg?height=200&width=200",
+      description: "Connect with popular CRM systems like Salesforce, HubSpot, and more.",
+      trending: true,
+      featured: false,
     },
     {
       id: 6,
-      name: "Team Collaboration Suite",
-      description: "Enhanced team management and collaboration tools",
-      price: 349,
-      originalPrice: 449,
-      sales: 567,
+      name: "Custom Branding Package",
+      category: "Customization",
+      price: 149,
+      sales: 1834,
       rating: 4.5,
-      reviews: 123,
-      category: "Team Tools",
-      icon: Users,
-      features: ["Team chat", "Task management", "Performance tracking"],
-      discount: 22,
+      reviews: 267,
+      image: "/placeholder.svg?height=200&width=200",
+      description: "White-label solution with custom branding and styling options.",
+      trending: false,
+      featured: true,
     },
-  ]
+  ])
 
-  const filteredProducts = products.filter(
-    (product) =>
+  const [categories] = useState([
+    { id: "all", name: "All Products", count: 6 },
+    { id: "widgets", name: "Widgets", count: 1 },
+    { id: "integrations", name: "Integrations", count: 2 },
+    { id: "add-ons", name: "Add-ons", count: 1 },
+    { id: "analytics", name: "Analytics", count: 1 },
+    { id: "customization", name: "Customization", count: 1 },
+  ])
+
+  const filteredProducts = bestSellers.filter((product) => {
+    const matchesSearch =
       product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      product.description.toLowerCase().includes(searchTerm.toLowerCase()),
-  )
+      product.description.toLowerCase().includes(searchTerm.toLowerCase())
+    const matchesCategory = selectedCategory === "all" || product.category.toLowerCase() === selectedCategory
+    return matchesSearch && matchesCategory
+  })
 
-  const categories = [
-    "All",
-    "Chat Solutions",
-    "Voice Solutions",
-    "Language Tools",
-    "Analytics",
-    "Bot Solutions",
-    "Team Tools",
-  ]
-  const [selectedCategory, setSelectedCategory] = useState("All")
-
-  const categoryFilteredProducts =
-    selectedCategory === "All"
-      ? filteredProducts
-      : filteredProducts.filter((product) => product.category === selectedCategory)
+  const renderStars = (rating: number) => {
+    return Array.from({ length: 5 }, (_, i) => (
+      <Star
+        key={i}
+        className={`w-4 h-4 ${i < Math.floor(rating) ? "text-yellow-400 fill-current" : "text-gray-300"}`}
+      />
+    ))
+  }
 
   return (
     <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
       {/* Header */}
-      <div className="flex items-center gap-4 mb-8">
-        <SidebarTrigger className="-ml-1" />
-        <div>
-          <h1 className="text-3xl font-bold text-foreground flex items-center gap-2">
-            <ShoppingBag className="h-8 w-8" />
-            Best Selling Products
-          </h1>
-          <p className="text-muted-foreground">Discover our most popular AI solutions and add-ons</p>
-        </div>
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold text-foreground">Best Selling Products</h1>
+        <p className="text-muted-foreground">Discover our most popular AI customer service solutions</p>
       </div>
 
       {/* Stats Overview */}
-      <div className="grid md:grid-cols-4 gap-6 mb-8">
+      <div className="grid md:grid-cols-4 gap-4 mb-6">
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Products</CardTitle>
-            <ShoppingBag className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{products.length}</div>
-            <p className="text-xs text-muted-foreground">
-              <TrendingUp className="h-3 w-3 inline mr-1 text-emerald-500" />
-              +2 new this month
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Sales</CardTitle>
-            <TrendingUp className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">5,985</div>
-            <p className="text-xs text-muted-foreground">+18% from last month</p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Avg Rating</CardTitle>
-            <Star className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">4.7</div>
-            <p className="text-xs text-muted-foreground">Based on 1,569 reviews</p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Revenue</CardTitle>
-            <Zap className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">$2.1M</div>
-            <p className="text-xs text-muted-foreground">This quarter</p>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Search and Filter */}
-      <div className="flex flex-col sm:flex-row gap-4 mb-6">
-        <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-          <Input
-            placeholder="Search products..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10"
-          />
-        </div>
-        <div className="flex gap-2 flex-wrap">
-          {categories.map((category) => (
-            <Button
-              key={category}
-              variant={selectedCategory === category ? "default" : "outline"}
-              size="sm"
-              onClick={() => setSelectedCategory(category)}
-            >
-              {category}
-            </Button>
-          ))}
-        </div>
-      </div>
-
-      {/* Products Grid */}
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {categoryFilteredProducts.map((product) => (
-          <Card key={product.id} className="hover:shadow-lg transition-shadow">
-            <CardHeader>
-              <div className="flex items-start justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-primary/10 rounded-lg">
-                    <product.icon className="h-6 w-6 text-primary" />
-                  </div>
-                  <div>
-                    <CardTitle className="text-lg">{product.name}</CardTitle>
-                    <Badge variant="secondary" className="text-xs mt-1">
-                      {product.category}
-                    </Badge>
-                  </div>
-                </div>
-                {product.discount > 0 && (
-                  <Badge variant="destructive" className="text-xs">
-                    -{product.discount}%
-                  </Badge>
-                )}
+          <CardContent className="p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-muted-foreground">Total Products</p>
+                <p className="text-2xl font-bold">24</p>
               </div>
-              <CardDescription className="mt-2">{product.description}</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {/* Features */}
-                <div>
-                  <h4 className="text-sm font-medium mb-2">Key Features:</h4>
-                  <ul className="text-xs text-muted-foreground space-y-1">
-                    {product.features.map((feature, index) => (
-                      <li key={index} className="flex items-center gap-2">
-                        <div className="w-1 h-1 bg-primary rounded-full" />
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+              <Package className="h-8 w-8 text-primary" />
+            </div>
+          </CardContent>
+        </Card>
 
-                {/* Rating and Sales */}
-                <div className="flex items-center justify-between text-sm">
-                  <div className="flex items-center gap-1">
-                    <Star className="h-4 w-4 text-yellow-500 fill-current" />
-                    <span className="font-medium">{product.rating}</span>
-                    <span className="text-muted-foreground">({product.reviews})</span>
-                  </div>
-                  <div className="text-muted-foreground">{product.sales} sales</div>
-                </div>
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-muted-foreground">Total Sales</p>
+                <p className="text-2xl font-bold">8,519</p>
+              </div>
+              <ShoppingCart className="h-8 w-8 text-emerald-400" />
+            </div>
+          </CardContent>
+        </Card>
 
-                {/* Pricing */}
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span className="text-2xl font-bold text-primary">${product.price}</span>
-                    {product.originalPrice > product.price && (
-                      <span className="text-sm text-muted-foreground line-through">${product.originalPrice}</span>
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-muted-foreground">Revenue</p>
+                <p className="text-2xl font-bold">$2.8M</p>
+              </div>
+              <DollarSign className="h-8 w-8 text-purple-400" />
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-muted-foreground">Avg Rating</p>
+                <p className="text-2xl font-bold">4.7</p>
+              </div>
+              <Star className="h-8 w-8 text-yellow-600" />
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Search and Filters */}
+      <Card className="mb-6">
+        <CardContent className="p-4">
+          <div className="flex flex-col md:flex-row gap-4">
+            <div className="flex-1">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                <Input
+                  placeholder="Search products..."
+                  className="pl-10"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+              </div>
+            </div>
+            <div className="flex gap-2">
+              {categories.map((category) => (
+                <Button
+                  key={category.id}
+                  variant={selectedCategory === category.id ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setSelectedCategory(category.id)}
+                >
+                  {category.name} ({category.count})
+                </Button>
+              ))}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Tabs defaultValue="grid" className="space-y-6">
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="grid">Grid View</TabsTrigger>
+          <TabsTrigger value="list">List View</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="grid" className="space-y-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredProducts.map((product) => (
+              <Card key={product.id} className="overflow-hidden hover:shadow-lg transition-shadow">
+                <div className="relative">
+                  <img
+                    src={product.image || "/placeholder.svg"}
+                    alt={product.name}
+                    className="w-full h-48 object-cover"
+                  />
+                  <div className="absolute top-2 left-2 flex gap-2">
+                    {product.featured && <Badge className="bg-purple-100 text-purple-800">Featured</Badge>}
+                    {product.trending && (
+                      <Badge className="bg-emerald-900/40 text-emerald-300">
+                        <TrendingUp className="w-3 h-3 mr-1" />
+                        Trending
+                      </Badge>
                     )}
                   </div>
-                  <Button>Add to Cart</Button>
+                  <div className="absolute top-2 right-2 flex gap-2">
+                    <Button size="sm" variant="secondary" className="h-8 w-8 p-0">
+                      <Heart className="h-4 w-4" />
+                    </Button>
+                    <Button size="sm" variant="secondary" className="h-8 w-8 p-0">
+                      <Share2 className="h-4 w-4" />
+                    </Button>
+                  </div>
                 </div>
+                <CardHeader>
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <CardTitle className="text-lg">{product.name}</CardTitle>
+                      <Badge variant="outline" className="mt-1">
+                        {product.category}
+                      </Badge>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-2xl font-bold text-emerald-400">${product.price}</div>
+                    </div>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground text-sm mb-4">{product.description}</p>
+
+                  <div className="flex items-center gap-2 mb-4">
+                    <div className="flex">{renderStars(product.rating)}</div>
+                    <span className="text-sm font-medium">{product.rating}</span>
+                    <span className="text-sm text-muted-foreground">({product.reviews} reviews)</span>
+                  </div>
+
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-2">
+                      <Users className="h-4 w-4 text-muted-foreground" />
+                      <span className="text-sm text-muted-foreground">{product.sales} sales</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Eye className="h-4 w-4 text-muted-foreground" />
+                      <span className="text-sm text-muted-foreground">View Details</span>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-2">
+                    <Button className="flex-1">
+                      <ShoppingCart className="h-4 w-4 mr-2" />
+                      Purchase
+                    </Button>
+                    <Button variant="outline">
+                      <Eye className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </TabsContent>
+
+        <TabsContent value="list" className="space-y-6">
+          <Card>
+            <CardContent className="p-0">
+              <div className="space-y-0">
+                {filteredProducts.map((product) => (
+                  <div key={product.id} className="flex items-center gap-4 p-6 border-b hover:bg-muted/30">
+                    <img
+                      src={product.image || "/placeholder.svg"}
+                      alt={product.name}
+                      className="w-20 h-20 object-cover rounded-lg"
+                    />
+                    <div className="flex-1">
+                      <div className="flex items-start justify-between mb-2">
+                        <div>
+                          <h3 className="font-semibold text-lg">{product.name}</h3>
+                          <div className="flex items-center gap-2 mt-1">
+                            <Badge variant="outline">{product.category}</Badge>
+                            {product.featured && <Badge className="bg-purple-100 text-purple-800">Featured</Badge>}
+                            {product.trending && (
+                              <Badge className="bg-emerald-900/40 text-emerald-300">
+                                <TrendingUp className="w-3 h-3 mr-1" />
+                                Trending
+                              </Badge>
+                            )}
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <div className="text-2xl font-bold text-emerald-400">${product.price}</div>
+                          <div className="text-sm text-muted-foreground">{product.sales} sales</div>
+                        </div>
+                      </div>
+
+                      <p className="text-muted-foreground text-sm mb-3">{product.description}</p>
+
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-4">
+                          <div className="flex items-center gap-2">
+                            <div className="flex">{renderStars(product.rating)}</div>
+                            <span className="text-sm font-medium">{product.rating}</span>
+                            <span className="text-sm text-muted-foreground">({product.reviews})</span>
+                          </div>
+                        </div>
+
+                        <div className="flex gap-2">
+                          <Button size="sm" variant="outline">
+                            <Eye className="h-4 w-4 mr-2" />
+                            View
+                          </Button>
+                          <Button size="sm">
+                            <ShoppingCart className="h-4 w-4 mr-2" />
+                            Purchase
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
             </CardContent>
           </Card>
-        ))}
-      </div>
+        </TabsContent>
+      </Tabs>
 
-      {/* No Results */}
-      {categoryFilteredProducts.length === 0 && (
-        <div className="text-center py-12">
-          <ShoppingBag className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-          <h3 className="text-lg font-medium mb-2">No products found</h3>
-          <p className="text-muted-foreground">Try adjusting your search or filter criteria</p>
-        </div>
-      )}
+      {/* Featured Products Section */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Featured This Month</CardTitle>
+          <CardDescription>Hand-picked products with special offers</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid md:grid-cols-3 gap-4">
+            {filteredProducts
+              .filter((p) => p.featured)
+              .slice(0, 3)
+              .map((product) => (
+                <div key={product.id} className="p-4 border rounded-lg">
+                  <img
+                    src={product.image || "/placeholder.svg"}
+                    alt={product.name}
+                    className="w-full h-32 object-cover rounded-lg mb-3"
+                  />
+                  <h4 className="font-semibold mb-2">{product.name}</h4>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-1">
+                      {renderStars(product.rating).slice(0, 5)}
+                      <span className="text-sm ml-1">{product.rating}</span>
+                    </div>
+                    <span className="font-bold text-emerald-400">${product.price}</span>
+                  </div>
+                </div>
+              ))}
+          </div>
+        </CardContent>
+      </Card>
     </div>
   )
 }

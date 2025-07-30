@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
 import { SidebarTrigger } from "@/components/ui/sidebar"
+import { uniSenseAiLogo } from "@/components/images/unisense-ai-logo.png"
 import {
   MessageSquare,
   Settings,
@@ -21,7 +22,6 @@ import {
   Star,
 } from "lucide-react"
 import Link from "next/link"
-import Image from "next/image"
 
 export default function Dashboard() {
   const [alerts] = useState([
@@ -44,24 +44,20 @@ export default function Dashboard() {
   ]
 
   return (
-    <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
-      {/* Header with Sidebar Trigger */}
-      <div className="flex items-center gap-4 mb-8">
-        <SidebarTrigger className="-ml-1" />
-        <div>
-          <div className="flex items-center gap-3 mb-1">
-            <Image
-              src="/components/images/unisense-ai-logo.png"
-              alt="UniSense AI"
-              width={32}
-              height={32}
-              className="h-8 w-auto"
-            />
-            <h1 className="text-3xl font-bold text-foreground">Dashboard</h1>
-          </div>
-          <p className="text-muted-foreground">Manage your AI customer service operations</p>
-        </div>
-      </div>
+    <div className="flex items-center gap-4 mb-8">
+  <SidebarTrigger className="-ml-1" />
+  <div>
+    <div className="flex items-center gap-3 mb-1">
+      <img 
+        src= uniSenseAiLogo
+        alt="UniSense AI" 
+        className="h-8 w-auto" 
+      />
+      <h1 className="text-3xl font-bold text-foreground">Dashboard</h1>
+    </div>
+    <p className="text-muted-foreground">Manage your AI customer service operations</p>
+  </div>
+</div>
 
       {/* Primary Navigation Cards */}
       <div className="grid md:grid-cols-2 gap-6 mb-8">
@@ -110,71 +106,7 @@ export default function Dashboard() {
         </Link>
       </div>
 
-      {/* AI Agents Overview - Central Hub */}
-      <Card className="mb-8">
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <div>
-              <CardTitle className="text-2xl">AI Agents Overview</CardTitle>
-              <CardDescription>Real-time status and performance monitoring</CardDescription>
-            </div>
-            <div className="flex gap-2">
-              <Link href="/live-monitoring">
-                <Button variant="outline" size="sm">
-                  <MessageSquare className="h-4 w-4 mr-2" />
-                  Live Monitoring
-                </Button>
-              </Link>
-              <Link href="/analytics">
-                <Button variant="outline" size="sm">
-                  <BarChart3 className="h-4 w-4 mr-2" />
-                  Analytics
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </CardHeader>
-        <CardContent>
-          <div className="grid md:grid-cols-5 gap-4">
-            {agentStats.map((agent) => (
-              <Card key={agent.id} className="relative">
-                <CardHeader className="pb-3">
-                  <div className="flex items-center justify-between">
-                    <CardTitle className="text-sm font-medium">{agent.name}</CardTitle>
-                    <Badge variant={agent.status === "active" ? "default" : "secondary"} className="text-xs">
-                      {agent.status}
-                    </Badge>
-                  </div>
-                </CardHeader>
-                <CardContent className="pt-0">
-                  <div className="space-y-3">
-                    <div>
-                      <div className="flex justify-between text-xs text-muted-foreground mb-1">
-                        <span>Active Conversations</span>
-                        <span>{agent.conversations}</span>
-                      </div>
-                    </div>
-                    <div>
-                      <div className="flex justify-between text-xs text-muted-foreground mb-1">
-                        <span>Token Usage</span>
-                        <span>{agent.tokens}%</span>
-                      </div>
-                      <Progress value={agent.tokens} className="h-2 bg-muted" />
-                    </div>
-                    <div>
-                      <div className="flex justify-between text-xs text-muted-foreground mb-1">
-                        <span>Performance</span>
-                        <span>{agent.performance}%</span>
-                      </div>
-                      <Progress value={agent.performance} className="h-2 bg-muted" />
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+      
 
       {/* Quick Stats Grid */}
       <div className="grid md:grid-cols-4 gap-6 mb-8">
@@ -186,7 +118,7 @@ export default function Dashboard() {
           <CardContent>
             <div className="text-2xl font-bold">1,247</div>
             <p className="text-xs text-muted-foreground">
-              <TrendingUp className="h-3 w-3 inline mr-1 text-emerald-500" />
+              <TrendingUp className="h-3 w-3 inline mr-1 text-success" />
               +12% from last hour
             </p>
           </CardContent>
@@ -214,7 +146,7 @@ export default function Dashboard() {
           <CardContent>
             <div className="text-2xl font-bold">94.2%</div>
             <p className="text-xs text-muted-foreground">
-              <TrendingUp className="h-3 w-3 inline mr-1 text-emerald-500" />
+              <TrendingUp className="h-3 w-3 inline mr-1 text-success" />
               +2.1% from yesterday
             </p>
           </CardContent>
@@ -226,7 +158,7 @@ export default function Dashboard() {
             <Zap className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-emerald-500">Optimal</div>
+            <div className="text-2xl font-bold text-success">Optimal</div>
             <p className="text-xs text-muted-foreground">
               <Globe className="h-3 w-3 inline mr-1" />
               All systems operational
@@ -266,7 +198,7 @@ export default function Dashboard() {
                   </div>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-1">
-                      <Star className="h-3 w-3 text-yellow-500 fill-current" />
+                      <Star className="h-3 w-3 text-accent fill-current" />
                       <span className="text-sm font-medium">{product.rating}</span>
                     </div>
                     <span className="text-lg font-bold text-primary">${product.price}</span>
