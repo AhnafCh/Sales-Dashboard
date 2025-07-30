@@ -38,7 +38,7 @@ const data = {
   },
   teams: [
     {
-      name: "UniSense AI",
+      name: "Orogenic",
       logo: GalleryVerticalEnd,
       plan: "Enterprise",
     },
