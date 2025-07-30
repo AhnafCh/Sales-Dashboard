@@ -43,15 +43,20 @@ export default function Dashboard() {
   ]
 
   return (
-    <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
-      {/* Header with Sidebar Trigger */}
-      <div className="flex items-center gap-4 mb-8">
-        <SidebarTrigger className="-ml-1" />
-        <div>
-          <h1 className="text-3xl font-bold text-foreground">UniSense AI Dashboard</h1>
-          <p className="text-muted-foreground">Manage your AI customer service operations</p>
-        </div>
-      </div>
+    <div className="flex items-center gap-4 mb-8">
+  <SidebarTrigger className="-ml-1" />
+  <div>
+    <div className="flex items-center gap-3 mb-1">
+      <img 
+        src="/path-to-your-logo.png" 
+        alt="UniSense AI" 
+        className="h-8 w-auto" 
+      />
+      <h1 className="text-3xl font-bold text-foreground">Dashboard</h1>
+    </div>
+    <p className="text-muted-foreground">Manage your AI customer service operations</p>
+  </div>
+</div>
 
       {/* Primary Navigation Cards */}
       <div className="grid md:grid-cols-2 gap-6 mb-8">
