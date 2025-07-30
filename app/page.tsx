@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
 import { SidebarTrigger } from "@/components/ui/sidebar"
+import { uniSenseAiLogo } from "@/components/images/UniSense Ai white@216x.png"
 import {
   MessageSquare,
   Settings,
@@ -48,7 +49,7 @@ export default function Dashboard() {
   <div>
     <div className="flex items-center gap-3 mb-1">
       <img 
-        src="/path-to-your-logo.png" 
+        src= uniSenseAiLogo
         alt="UniSense AI" 
         className="h-8 w-auto" 
       />
